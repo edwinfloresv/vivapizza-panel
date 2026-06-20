@@ -9,33 +9,25 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: sans-serif; background: #f5f5f5; display: flex; min-height: 100vh; }
 
-    /* ── Sidebar ── */
-    .sidebar {
-      width: 220px; min-height: 100vh; background: #111; display: flex;
-      flex-direction: column; padding: 1.5rem 0; flex-shrink: 0;
-    }
+    /* Sidebar */
+    .sidebar { width: 220px; min-height: 100vh; background: #111; display: flex; flex-direction: column; padding: 1.5rem 0; flex-shrink: 0; }
     .sidebar-logo { color: #fff; font-size: 16px; font-weight: 700; padding: 0 1.25rem 1.5rem; border-bottom: 1px solid #222; }
     .sidebar-logo span { color: #f59e0b; }
     .sidebar-menu { margin-top: 1rem; }
-    .menu-item {
-      display: flex; align-items: center; gap: 10px; padding: 0.75rem 1.25rem;
-      color: #888; font-size: 14px; cursor: pointer; transition: all 0.15s;
-      border-left: 3px solid transparent;
-    }
+    .menu-item { display: flex; align-items: center; gap: 10px; padding: 0.75rem 1.25rem; color: #888; font-size: 14px; cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
     .menu-item:hover { color: #fff; background: #1a1a1a; }
     .menu-item.active { color: #fff; background: #1a1a1a; border-left-color: #f59e0b; }
     .menu-item .icon { font-size: 18px; width: 22px; text-align: center; }
 
-    /* ── Main ── */
+    /* Main */
     .main { flex: 1; padding: 2rem 1.5rem; overflow-x: hidden; }
     .panel { display: none; }
     .panel.active { display: block; }
-
     h2 { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 1.25rem; }
 
     .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 1.25rem; }
 
-    /* ── Comparador (panel 1) ── */
+    /* Shared */
     .seccion-titulo { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; margin-bottom: 10px; }
     .bloque { border: 1px solid #eee; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
     .bloque.a { border-left: 3px solid #111; }
@@ -43,36 +35,29 @@
     .bloque.b input[type="date"] { background: #fefce8; color: #92400e; }
     label { font-size: 13px; color: #666; display: block; margin-bottom: 6px; }
     .hint { font-size: 11px; color: #aaa; margin-top: 8px; }
-    input[type="date"], select {
-      width: 100%; padding: 8px 10px; border: 1px solid #ddd;
-      border-radius: 8px; font-size: 14px; outline: none; background: #fff;
-    }
+    input[type="date"], select { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
     input[type="date"]:focus, select:focus { border-color: #888; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75rem; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
     .accesos { display: flex; gap: 6px; flex-wrap: wrap; }
-    .accesos button, .accesos-g button {
-      font-size: 12px; padding: 4px 12px; border: 1px solid #ddd;
-      border-radius: 20px; background: #fff; cursor: pointer; color: #333;
-    }
-    .accesos button:hover, .accesos-g button:hover { background: #f0f0f0; }
-    .accesos-g button.active { background: #111; color: #fff; border-color: #111; }
-
+    .accesos button { font-size: 12px; padding: 4px 12px; border: 1px solid #ddd; border-radius: 20px; background: #fff; cursor: pointer; color: #333; }
+    .accesos button:hover { background: #f0f0f0; }
+    .agrupacion-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .agrupacion-btns button { font-size: 13px; padding: 6px 16px; border: 1px solid #ddd; border-radius: 20px; background: #fff; cursor: pointer; color: #333; }
+    .agrupacion-btns button.active { background: #111; color: #fff; border-color: #111; }
     .btn { width: 100%; padding: 10px; background: #111; color: #fff; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
     .btn:hover { background: #333; }
     .btn:disabled { background: #aaa; cursor: not-allowed; }
     .estado-txt { font-size: 13px; color: #888; margin-top: 0.75rem; min-height: 18px; text-align: center; }
 
+    /* Comparador */
     .sucursales { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
     @media (max-width: 700px) { .sucursales { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } }
-
     .sucursal-panel { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-top: 4px solid #ddd; }
     .sucursal-panel.armenia { border-top-color: #e63312; }
     .sucursal-panel.izalco  { border-top-color: #f5a623; }
     .sucursal-nombre { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; }
     .sucursal-panel.armenia .sucursal-nombre { color: #e63312; }
     .sucursal-panel.izalco  .sucursal-nombre { color: #d97706; }
-
     .comparacion { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
     .res-bloque { border-radius: 8px; padding: 0.75rem 1rem; background: #f9f9f9; }
     .res-bloque.per-a { background: #f0f9ff; border: 1px solid #bae6fd; }
@@ -86,7 +71,6 @@
     .res-bloque .total { font-size: 22px; font-weight: 700; color: #111; }
     .res-bloque.per-a .total { color: #0c4a6e; }
     .res-bloque.per-b .total { color: #78350f; }
-
     .diferencia { border-radius: 8px; padding: 0.75rem 1rem; background: #f0fdf4; border: 1px solid #bbf7d0; text-align: center; }
     .diferencia.negativa { background: #fef2f2; border-color: #fecaca; }
     .diferencia.oculta { display: none; }
@@ -95,10 +79,8 @@
     .diferencia.negativa .dif-valor { color: #dc2626; }
     .dif-pct { font-size: 12px; color: #16a34a; margin-top: 2px; }
     .diferencia.negativa .dif-pct { color: #dc2626; }
-
     .total-combinado-wrap { display: none; }
     .total-combinado-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-    @media (max-width: 600px) { .total-combinado-grid { grid-template-columns: 1fr; } }
     .total-card { border-radius: 12px; padding: 1.25rem 1.5rem; }
     .total-card.per-a { background: #111; color: #fff; }
     .total-card.per-b { background: #78350f; color: #fff; }
@@ -106,82 +88,71 @@
     .total-card .tc-valor { font-size: 30px; font-weight: 700; }
     .total-card .tc-periodo { font-size: 11px; color: #666; margin-top: 4px; }
 
-    /* ── Gráficas (panel 2) ── */
-    .controles-grafica { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-bottom: 1.25rem; }
-    .ctrl-group { display: flex; flex-direction: column; gap: 4px; }
-    .ctrl-group label { font-size: 12px; color: #666; }
-    .ctrl-group select, .ctrl-group input[type="date"], .ctrl-group input[type="number"] {
-      width: auto; min-width: 140px; padding: 7px 10px;
-    }
-
-    .agrupacion-btns { display: flex; gap: 6px; flex-wrap: wrap; }
-    .agrupacion-btns button {
-      font-size: 13px; padding: 6px 16px; border: 1px solid #ddd;
-      border-radius: 20px; background: #fff; cursor: pointer; color: #333;
-    }
-    .agrupacion-btns button.active { background: #111; color: #fff; border-color: #111; }
-
+    /* Gráficas */
     .chart-container { position: relative; height: 340px; margin-bottom: 1.25rem; }
-
     .resumen-graficas { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
     .res-mini { background: #fff; border-radius: 10px; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); text-align: center; }
     .res-mini .rm-label { font-size: 11px; color: #888; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
     .res-mini .rm-valor { font-size: 22px; font-weight: 700; color: #111; }
     .res-mini.armenia .rm-valor { color: #e63312; }
     .res-mini.izalco  .rm-valor { color: #d97706; }
-    .res-mini.combinado .rm-valor { color: #111; }
 
-    /* ── Tendencias (panel 3) ── */
-    .tend-periodos { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    @media (max-width: 600px) { .tend-periodos { grid-template-columns: 1fr; } }
-    .tend-bloque { border: 1px solid #eee; border-radius: 10px; padding: 1rem 1.25rem; }
-    .tend-bloque.ta { border-left: 3px solid #2563eb; }
-    .tend-bloque.tb { border-left: 3px solid #dc2626; }
-    .tend-bloque.ta input[type="date"] { background: #eff6ff; }
-    .tend-bloque.tb input[type="date"] { background: #fff1f2; }
-    .tend-accesos { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
-    .tend-accesos button { font-size: 11px; padding: 3px 10px; border: 1px solid #ddd; border-radius: 20px; background: #fff; cursor: pointer; color: #555; }
-    .tend-accesos button:hover { background: #f0f0f0; }
-    .tend-resumen { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
-    .tend-res-card { border-radius: 10px; padding: 1rem 1.25rem; text-align: center; }
-    .tend-res-card.azul  { background: #eff6ff; border: 1px solid #bfdbfe; }
-    .tend-res-card.rojo  { background: #fff1f2; border: 1px solid #fecdd3; }
-    .tend-res-card.verde { background: #f0fdf4; border: 1px solid #bbf7d0; }
-    .tend-res-card.naranja { background: #fef2f2; border: 1px solid #fecaca; }
-    .tend-res-card .tr-label { font-size: 11px; color: #666; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
-    .tend-res-card .tr-valor { font-size: 22px; font-weight: 700; }
-    .tend-res-card.azul  .tr-valor { color: #1d4ed8; }
-    .tend-res-card.rojo  .tr-valor { color: #dc2626; }
-    .tend-res-card.verde .tr-valor { color: #16a34a; }
-    .tend-res-card.naranja .tr-valor { color: #dc2626; }
-    .tend-chart-container { position: relative; height: 360px; }
+    /* Tendencias */
+    .tend-sucursales { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+    @media (max-width: 700px) { .tend-sucursales { grid-template-columns: 1fr; } }
+    .tend-suc-panel { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-top: 4px solid #ddd; }
+    .tend-suc-panel.armenia { border-top-color: #e63312; }
+    .tend-suc-panel.izalco  { border-top-color: #f5a623; }
+    .tend-suc-panel.combinado { border-top-color: #111; }
+    .tend-suc-nombre { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem; }
+    .tend-suc-panel.armenia .tend-suc-nombre { color: #e63312; }
+    .tend-suc-panel.izalco  .tend-suc-nombre { color: #d97706; }
+    .tend-suc-panel.combinado .tend-suc-nombre { color: #111; }
+    .tend-chart-wrap { position: relative; height: 200px; }
+    .tend-resumen-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .trm { border-radius: 8px; padding: 0.6rem 0.75rem; text-align: center; }
+    .trm.azul   { background: #eff6ff; border: 1px solid #bfdbfe; }
+    .trm.ambar  { background: #fefce8; border: 1px solid #fde68a; }
+    .trm.verde  { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .trm.rojo   { background: #fef2f2; border: 1px solid #fecaca; }
+    .trm .trm-label { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
+    .trm .trm-valor { font-size: 15px; font-weight: 700; }
+    .trm.azul  .trm-valor { color: #1d4ed8; }
+    .trm.ambar .trm-valor { color: #92400e; }
+    .trm.verde .trm-valor { color: #16a34a; }
+    .trm.rojo  .trm-valor { color: #dc2626; }
+    .tend-total-wrap { display: none; }
+    .tend-total-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+    .tend-total-card { border-radius: 12px; padding: 1.25rem 1.5rem; }
+    .tend-total-card.per-a { background: #111; color: #fff; }
+    .tend-total-card.per-b { background: #78350f; color: #fff; }
+    .tend-total-card .ttc-label { font-size: 12px; color: #aaa; margin-bottom: 4px; }
+    .tend-total-card .ttc-valor { font-size: 28px; font-weight: 700; }
+    .tend-total-card .ttc-periodo { font-size: 11px; color: #666; margin-top: 4px; }
   </style>
 </head>
 <body>
 
-<!-- Sidebar -->
 <nav class="sidebar">
   <div class="sidebar-logo">🍕 Viva <span>Pizza</span></div>
   <div class="sidebar-menu">
-    <div class="menu-item active" onclick="showPanel('comparador')">
+    <div class="menu-item active" onclick="showPanel('comparador', this)">
       <span class="icon">⚖️</span> Comparador
     </div>
-    <div class="menu-item" onclick="showPanel('graficas')">
+    <div class="menu-item" onclick="showPanel('graficas', this)">
       <span class="icon">📊</span> Gráficas
     </div>
-    <div class="menu-item" onclick="showPanel('tendencias')">
+    <div class="menu-item" onclick="showPanel('tendencias', this)">
       <span class="icon">📈</span> Tendencias
     </div>
   </div>
 </nav>
 
-<!-- Main -->
 <main class="main">
 
-  <!-- ══ PANEL 1: Comparador ══ -->
+  <!-- PANEL 1: Comparador -->
   <div class="panel active" id="panel-comparador">
     <h2>Comparador de períodos</h2>
-
     <div class="card">
       <div class="bloque a">
         <div class="seccion-titulo">Período A</div>
@@ -212,67 +183,33 @@
       <div class="sucursal-panel armenia">
         <div class="sucursal-nombre">🔴 Armenia</div>
         <div class="comparacion">
-          <div class="res-bloque per-a">
-            <div class="etiqueta">Período A</div>
-            <div class="periodo-txt" id="arm-a-periodo"></div>
-            <div class="total" id="arm-a-total">—</div>
-          </div>
-          <div class="res-bloque per-b">
-            <div class="etiqueta">Período B</div>
-            <div class="periodo-txt" id="arm-b-periodo"></div>
-            <div class="total" id="arm-b-total">—</div>
-          </div>
+          <div class="res-bloque per-a"><div class="etiqueta">Período A</div><div class="periodo-txt" id="arm-a-periodo"></div><div class="total" id="arm-a-total">—</div></div>
+          <div class="res-bloque per-b"><div class="etiqueta">Período B</div><div class="periodo-txt" id="arm-b-periodo"></div><div class="total" id="arm-b-total">—</div></div>
         </div>
-        <div class="diferencia oculta" id="arm-dif">
-          <div class="dif-label" id="arm-dif-label"></div>
-          <div class="dif-valor" id="arm-dif-valor"></div>
-          <div class="dif-pct" id="arm-dif-pct"></div>
-        </div>
+        <div class="diferencia oculta" id="arm-dif"><div class="dif-label" id="arm-dif-label"></div><div class="dif-valor" id="arm-dif-valor"></div><div class="dif-pct" id="arm-dif-pct"></div></div>
       </div>
       <div class="sucursal-panel izalco">
         <div class="sucursal-nombre">🟠 Izalco</div>
         <div class="comparacion">
-          <div class="res-bloque per-a">
-            <div class="etiqueta">Período A</div>
-            <div class="periodo-txt" id="izl-a-periodo"></div>
-            <div class="total" id="izl-a-total">—</div>
-          </div>
-          <div class="res-bloque per-b">
-            <div class="etiqueta">Período B</div>
-            <div class="periodo-txt" id="izl-b-periodo"></div>
-            <div class="total" id="izl-b-total">—</div>
-          </div>
+          <div class="res-bloque per-a"><div class="etiqueta">Período A</div><div class="periodo-txt" id="izl-a-periodo"></div><div class="total" id="izl-a-total">—</div></div>
+          <div class="res-bloque per-b"><div class="etiqueta">Período B</div><div class="periodo-txt" id="izl-b-periodo"></div><div class="total" id="izl-b-total">—</div></div>
         </div>
-        <div class="diferencia oculta" id="izl-dif">
-          <div class="dif-label" id="izl-dif-label"></div>
-          <div class="dif-valor" id="izl-dif-valor"></div>
-          <div class="dif-pct" id="izl-dif-pct"></div>
-        </div>
+        <div class="diferencia oculta" id="izl-dif"><div class="dif-label" id="izl-dif-label"></div><div class="dif-valor" id="izl-dif-valor"></div><div class="dif-pct" id="izl-dif-pct"></div></div>
       </div>
     </div>
 
     <div class="total-combinado-wrap" id="total-combinado-wrap">
       <div class="total-combinado-grid">
-        <div class="total-card per-a">
-          <div class="tc-label">Total combinado · Período A</div>
-          <div class="tc-valor" id="tc-a-valor">—</div>
-          <div class="tc-periodo" id="tc-a-periodo"></div>
-        </div>
-        <div class="total-card per-b">
-          <div class="tc-label">Total combinado · Período B</div>
-          <div class="tc-valor" id="tc-b-valor">—</div>
-          <div class="tc-periodo" id="tc-b-periodo"></div>
-        </div>
+        <div class="total-card per-a"><div class="tc-label">Total combinado · Período A</div><div class="tc-valor" id="tc-a-valor">—</div><div class="tc-periodo" id="tc-a-periodo"></div></div>
+        <div class="total-card per-b"><div class="tc-label">Total combinado · Período B</div><div class="tc-valor" id="tc-b-valor">—</div><div class="tc-periodo" id="tc-b-periodo"></div></div>
       </div>
     </div>
   </div>
 
-  <!-- ══ PANEL 2: Gráficas ══ -->
+  <!-- PANEL 2: Gráficas -->
   <div class="panel" id="panel-graficas">
     <h2>Gráficas de ventas</h2>
-
     <div class="card">
-      <!-- Agrupación -->
       <div style="margin-bottom:1rem;">
         <div class="seccion-titulo" style="margin-bottom:8px;">Agrupación</div>
         <div class="agrupacion-btns">
@@ -282,8 +219,6 @@
           <button onclick="setAgrupacion('anual', this)">Anual</button>
         </div>
       </div>
-
-      <!-- Controles dinámicos -->
       <div id="controles-fecha" class="grid-2" style="margin-bottom:1rem;">
         <div><label>Desde</label><input type="date" id="g-from" /></div>
         <div><label>Hasta</label><input type="date" id="g-to" /></div>
@@ -298,117 +233,108 @@
           <div><label>Año fin</label><input type="number" id="g-year-to" min="2020" max="2030" style="width:100%; padding:7px 10px; border:1px solid #ddd; border-radius:8px; font-size:14px;" /></div>
         </div>
       </div>
-
-      <!-- Sucursales -->
       <div style="margin-bottom:1rem;">
         <div class="seccion-titulo" style="margin-bottom:8px;">Sucursales</div>
         <div class="agrupacion-btns">
-          <button class="active" id="btn-suc-armenia" onclick="toggleSucursal('armenia', this)">🔴 Armenia</button>
-          <button class="active" id="btn-suc-izalco" onclick="toggleSucursal('izalco', this)">🟠 Izalco</button>
+          <button class="active" id="btn-suc-armenia"   onclick="toggleSucursal('armenia', this)">🔴 Armenia</button>
+          <button class="active" id="btn-suc-izalco"    onclick="toggleSucursal('izalco', this)">🟠 Izalco</button>
           <button class="active" id="btn-suc-combinado" onclick="toggleSucursal('combinado', this)">⚫ Combinado</button>
         </div>
       </div>
-
       <button class="btn" id="btn-graficar" onclick="graficar()">Generar gráfica</button>
       <div class="estado-txt" id="estado-graficas"></div>
     </div>
-
-    <!-- Gráfica -->
     <div class="card" id="chart-card" style="display:none;">
-      <div class="chart-container">
-        <canvas id="miGrafica"></canvas>
-      </div>
+      <div class="chart-container"><canvas id="miGrafica"></canvas></div>
     </div>
-
-    <!-- Resumen -->
     <div id="resumen-graficas" style="display:none;">
       <div class="resumen-graficas" id="resumen-grid"></div>
     </div>
   </div>
 
-  <!-- ══ PANEL 3: Tendencias ══ -->
+  <!-- PANEL 3: Tendencias -->
   <div class="panel" id="panel-tendencias">
-    <h2>Comparador de tendencias</h2>
+    <h2>Tendencias · Comparar períodos</h2>
 
     <div class="card">
-      <!-- Sucursal -->
-      <div style="margin-bottom:1rem;">
-        <div class="seccion-titulo" style="margin-bottom:8px;">Sucursal</div>
-        <div class="agrupacion-btns">
-          <button class="active" id="t-btn-armenia"   onclick="setTendSucursal('armenia', this)">🔴 Armenia</button>
-          <button id="t-btn-izalco"    onclick="setTendSucursal('izalco', this)">🟠 Izalco</button>
-          <button id="t-btn-combinado" onclick="setTendSucursal('combinado', this)">⚫ Combinado</button>
+      <div class="bloque a" style="border-left-color:#2563eb;">
+        <div class="seccion-titulo" style="color:#2563eb;">📘 Período A</div>
+        <div class="grid-2">
+          <div><label>Desde</label><input type="date" id="t-a-from" style="background:#eff6ff;" oninput="sincronizarTB()" /></div>
+          <div><label>Hasta</label><input type="date" id="t-a-to" style="background:#eff6ff;" oninput="sincronizarTB()" /></div>
+        </div>
+        <div class="accesos">
+          <button onclick="setTRapido('a','hoy')">Hoy</button>
+          <button onclick="setTRapido('a','ayer')">Ayer</button>
+          <button onclick="setTRapido('a','semana')">Esta semana</button>
+          <button onclick="setTRapido('a','mes')">Este mes</button>
         </div>
       </div>
-
-      <!-- Agrupación -->
+      <div class="bloque b" style="border-left-color:#dc2626;">
+        <div class="seccion-titulo" style="color:#dc2626;">📕 Período B — mismo rango, año anterior</div>
+        <div class="grid-2">
+          <div><label>Desde</label><input type="date" id="t-b-from" style="background:#fff1f2;" /></div>
+          <div><label>Hasta</label><input type="date" id="t-b-to" style="background:#fff1f2;" /></div>
+        </div>
+        <p class="hint">Se actualiza automáticamente al cambiar el período A. También puedes editarlo manualmente.</p>
+      </div>
       <div style="margin-bottom:1rem;">
         <div class="seccion-titulo" style="margin-bottom:8px;">Agrupación</div>
-        <div class="agrupacion-btns" id="tend-agrup-btns">
-          <button class="active" onclick="setTendAgrup('diario', this)">Diario</button>
-          <button onclick="setTendAgrup('semanal', this)">Semanal</button>
-          <button onclick="setTendAgrup('mensual', this)">Mensual</button>
+        <div class="agrupacion-btns" id="t-agrup-btns">
+          <button class="active" onclick="setTAgrup('diario', this)">Diario</button>
+          <button onclick="setTAgrup('semanal', this)">Semanal</button>
+          <button onclick="setTAgrup('mensual', this)">Mensual</button>
         </div>
       </div>
-
-      <!-- Períodos -->
-      <div class="tend-periodos">
-        <div class="tend-bloque ta">
-          <div class="seccion-titulo">📘 Período A</div>
-          <div class="grid-2">
-            <div><label>Desde</label><input type="date" id="t-a-from" /></div>
-            <div><label>Hasta</label><input type="date" id="t-a-to" /></div>
-          </div>
-          <div class="tend-accesos">
-            <button onclick="setTendRapido('a','semana')">Esta semana</button>
-            <button onclick="setTendRapido('a','mes')">Este mes</button>
-            <button onclick="setTendRapido('a','mes-ant')">Mes anterior</button>
-          </div>
-        </div>
-        <div class="tend-bloque tb">
-          <div class="seccion-titulo">📕 Período B</div>
-          <div class="grid-2">
-            <div><label>Desde</label><input type="date" id="t-b-from" /></div>
-            <div><label>Hasta</label><input type="date" id="t-b-to" /></div>
-          </div>
-          <div class="tend-accesos">
-            <button onclick="setTendRapido('b','semana')">Esta semana</button>
-            <button onclick="setTendRapido('b','mes')">Este mes</button>
-            <button onclick="setTendRapido('b','mes-ant')">Mes anterior</button>
-          </div>
-        </div>
-      </div>
-
-      <button class="btn" id="btn-tendencias" onclick="graficarTendencias()">Comparar tendencias</button>
+      <button class="btn" id="btn-tendencias" onclick="graficarTendencias()">Ver tendencias</button>
       <div class="estado-txt" id="estado-tendencias"></div>
     </div>
 
-    <!-- Resumen -->
-    <div id="tend-resumen-wrap" style="display:none; margin-bottom:1.25rem;">
-      <div class="tend-resumen">
-        <div class="tend-res-card azul">
-          <div class="tr-label">📘 Total período A</div>
-          <div class="tr-valor" id="tr-total-a">—</div>
+    <!-- Totales combinados -->
+    <div class="tend-total-wrap" id="tend-total-wrap">
+      <div class="tend-total-grid">
+        <div class="tend-total-card per-a"><div class="ttc-label">Total combinado · Período A</div><div class="ttc-valor" id="ttc-a-valor">—</div><div class="ttc-periodo" id="ttc-a-periodo"></div></div>
+        <div class="tend-total-card per-b"><div class="ttc-label">Total combinado · Período B</div><div class="ttc-valor" id="ttc-b-valor">—</div><div class="ttc-periodo" id="ttc-b-periodo"></div></div>
+      </div>
+    </div>
+
+    <!-- Gráficas por sucursal -->
+    <div class="tend-sucursales" id="tend-sucursales-wrap" style="display:none;">
+      <!-- Armenia -->
+      <div class="tend-suc-panel armenia">
+        <div class="tend-suc-nombre">🔴 Armenia</div>
+        <div class="tend-chart-wrap"><canvas id="tend-chart-armenia"></canvas></div>
+        <div class="tend-resumen-mini">
+          <div class="trm azul"><div class="trm-label">Período A</div><div class="trm-valor" id="tr-arm-a">—</div></div>
+          <div class="trm ambar"><div class="trm-label">Período B</div><div class="trm-valor" id="tr-arm-b">—</div></div>
+          <div class="trm" id="tr-arm-dif-card"><div class="trm-label">Diferencia</div><div class="trm-valor" id="tr-arm-dif">—</div></div>
+          <div class="trm" id="tr-arm-pct-card"><div class="trm-label">Variación</div><div class="trm-valor" id="tr-arm-pct">—</div></div>
         </div>
-        <div class="tend-res-card rojo">
-          <div class="tr-label">📕 Total período B</div>
-          <div class="tr-valor" id="tr-total-b">—</div>
-        </div>
-        <div class="tend-res-card" id="tr-dif-card">
-          <div class="tr-label">Diferencia</div>
-          <div class="tr-valor" id="tr-dif">—</div>
-        </div>
-        <div class="tend-res-card" id="tr-pct-card">
-          <div class="tr-label">Variación</div>
-          <div class="tr-valor" id="tr-pct">—</div>
+      </div>
+      <!-- Izalco -->
+      <div class="tend-suc-panel izalco">
+        <div class="tend-suc-nombre">🟠 Izalco</div>
+        <div class="tend-chart-wrap"><canvas id="tend-chart-izalco"></canvas></div>
+        <div class="tend-resumen-mini">
+          <div class="trm azul"><div class="trm-label">Período A</div><div class="trm-valor" id="tr-izl-a">—</div></div>
+          <div class="trm ambar"><div class="trm-label">Período B</div><div class="trm-valor" id="tr-izl-b">—</div></div>
+          <div class="trm" id="tr-izl-dif-card"><div class="trm-label">Diferencia</div><div class="trm-valor" id="tr-izl-dif">—</div></div>
+          <div class="trm" id="tr-izl-pct-card"><div class="trm-label">Variación</div><div class="trm-valor" id="tr-izl-pct">—</div></div>
         </div>
       </div>
     </div>
 
-    <!-- Gráfica -->
-    <div class="card" id="tend-chart-card" style="display:none;">
-      <div class="tend-chart-container">
-        <canvas id="tendGrafica"></canvas>
+    <!-- Combinado -->
+    <div id="tend-combinado-wrap" style="display:none;">
+      <div class="tend-suc-panel combinado">
+        <div class="tend-suc-nombre">⚫ Total combinado</div>
+        <div class="tend-chart-wrap" style="height:220px;"><canvas id="tend-chart-combinado"></canvas></div>
+        <div class="tend-resumen-mini">
+          <div class="trm azul"><div class="trm-label">Período A</div><div class="trm-valor" id="tr-comb-a">—</div></div>
+          <div class="trm ambar"><div class="trm-label">Período B</div><div class="trm-valor" id="tr-comb-b">—</div></div>
+          <div class="trm" id="tr-comb-dif-card"><div class="trm-label">Diferencia</div><div class="trm-valor" id="tr-comb-dif">—</div></div>
+          <div class="trm" id="tr-comb-pct-card"><div class="trm-label">Variación</div><div class="trm-valor" id="tr-comb-pct">—</div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -416,478 +342,286 @@
 </main>
 
 <script>
-  // ══ JS TENDENCIAS ══════════════════════════════════════════════════════
-
-  let tendSucursal = 'armenia';
-  let tendAgrup = 'diario';
-  let tendChart = null;
-
-  // Defaults
-  const _hoy = () => toISO(new Date());
-  const _ayer = () => { const d = new Date(); d.setDate(d.getDate()-1); return toISO(d); };
-  const _inicioMes = () => { const d = new Date(); d.setDate(1); return toISO(d); };
-  const _inicioMesAnt = () => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth()-1); return toISO(d); };
-  const _finMesAnt = () => { const d = new Date(); d.setDate(0); return toISO(d); };
-  const _inicioSemana = () => { const d = new Date(); d.setDate(d.getDate()-d.getDay()); return toISO(d); };
-  const _inicioSemAnt = () => { const d = new Date(); d.setDate(d.getDate()-d.getDay()-7); return toISO(d); };
-  const _finSemAnt = () => { const d = new Date(); d.setDate(d.getDate()-d.getDay()-1); return toISO(d); };
-
-  // Período A = este mes, Período B = mes anterior
-  document.getElementById('t-a-from').value = _inicioMes();
-  document.getElementById('t-a-to').value   = _hoy();
-  document.getElementById('t-b-from').value = _inicioMesAnt();
-  document.getElementById('t-b-to').value   = _finMesAnt();
-
-  function setTendSucursal(suc, btn) {
-    tendSucursal = suc;
-    document.querySelectorAll('#panel-tendencias .agrupacion-btns:first-of-type button, #t-btn-armenia, #t-btn-izalco, #t-btn-combinado')
-      .forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-
-  function setTendAgrup(tipo, btn) {
-    tendAgrup = tipo;
-    document.querySelectorAll('#tend-agrup-btns button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-
-  function setTendRapido(per, tipo) {
-    const f = document.getElementById(`t-${per}-from`);
-    const t = document.getElementById(`t-${per}-to`);
-    if (tipo === 'semana')   { f.value = _inicioSemana(); t.value = _hoy(); }
-    if (tipo === 'mes')      { f.value = _inicioMes();    t.value = _hoy(); }
-    if (tipo === 'mes-ant')  { f.value = _inicioMesAnt(); t.value = _finMesAnt(); }
-  }
-
-  async function fetchVentasRango(sucursal, from, to) {
-    // Construye puntos día por día / semana / mes según tendAgrup
-    let url = `${PROXY}/${sucursal}/ventas?agrupacion=${tendAgrup}&from=${from}&to=${to}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('Error ' + res.status);
-    return (await res.json()).puntos;
-  }
-
-  async function fetchCombinado(from, to) {
-    const [pA, pI] = await Promise.all([
-      fetchVentasRango('armenia', from, to),
-      fetchVentasRango('izalco',  from, to),
-    ]);
-    return pA.map((p, i) => ({ label: p.label, total: p.total + (pI[i]?.total ?? 0) }));
-  }
-
-  async function getPuntos(from, to) {
-    if (tendSucursal === 'combinado') return fetchCombinado(from, to);
-    return fetchVentasRango(tendSucursal, from, to);
-  }
-
-  async function graficarTendencias() {
-    const aFrom = document.getElementById('t-a-from').value;
-    const aTo   = document.getElementById('t-a-to').value;
-    const bFrom = document.getElementById('t-b-from').value;
-    const bTo   = document.getElementById('t-b-to').value;
-
-    if (!aFrom || !aTo || !bFrom || !bTo) {
-      document.getElementById('estado-tendencias').textContent = 'Completa todos los campos.'; return;
-    }
-
-    document.getElementById('estado-tendencias').textContent = 'Consultando...';
-    document.getElementById('btn-tendencias').disabled = true;
-    document.getElementById('tend-resumen-wrap').style.display = 'none';
-    document.getElementById('tend-chart-card').style.display = 'none';
-
-    try {
-      const [puntosA, puntosB] = await Promise.all([getPuntos(aFrom, aTo), getPuntos(bFrom, bTo)]);
-
-      const maxLen = Math.max(puntosA.length, puntosB.length);
-      const labels = Array.from({ length: maxLen }, (_, i) => `Punto ${i + 1}`);
-
-      const valA = puntosA.map(p => p.total);
-      const valB = puntosB.map(p => p.total);
-
-      // Banda de diferencia (fill entre las dos líneas)
-      const datasets = [
-        {
-          label: '📘 Período A',
-          data: valA,
-          borderColor: '#2563eb',
-          backgroundColor: 'rgba(37,99,235,0.08)',
-          borderWidth: 2.5,
-          pointRadius: 4,
-          pointBackgroundColor: '#2563eb',
-          tension: 0.35,
-          fill: false,
-          order: 1,
-        },
-        {
-          label: '📕 Período B',
-          data: valB,
-          borderColor: '#dc2626',
-          backgroundColor: 'rgba(220,38,38,0.08)',
-          borderWidth: 2.5,
-          pointRadius: 4,
-          pointBackgroundColor: '#dc2626',
-          tension: 0.35,
-          fill: false,
-          order: 2,
-        },
-        // Banda sombreada entre A y B
-        {
-          label: 'Diferencia',
-          data: valA,
-          borderColor: 'transparent',
-          backgroundColor: 'rgba(37,99,235,0.07)',
-          borderWidth: 0,
-          pointRadius: 0,
-          tension: 0.35,
-          fill: '+1',
-          order: 3,
-        },
-      ];
-
-      if (tendChart) tendChart.destroy();
-      const ctx = document.getElementById('tendGrafica').getContext('2d');
-      tendChart = new Chart(ctx, {
-        type: 'line',
-        data: { labels, datasets },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: { mode: 'index', intersect: false },
-          plugins: {
-            legend: {
-              position: 'top',
-              labels: {
-                filter: item => item.text !== 'Diferencia'
-              }
-            },
-            tooltip: {
-              callbacks: {
-                title: (items) => {
-                  const i = items[0].dataIndex;
-                  const lA = puntosA[i] ? fmtLabel(puntosA[i].label) : '';
-                  const lB = puntosB[i] ? fmtLabel(puntosB[i].label) : '';
-                  return [`📘 A: ${lA}`, `📕 B: ${lB}`];
-                },
-                label: ctx => {
-                  if (ctx.dataset.label === 'Diferencia') return null;
-                  const i = ctx.dataIndex;
-                  const a = valA[i] ?? 0;
-                  const b = valB[i] ?? 0;
-                  const diff = a - b;
-                  const pct = b !== 0 ? ((diff / b) * 100).toFixed(1) : null;
-                  if (ctx.dataset.label.includes('Período A')) {
-                    return ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}${pct !== null ? `  (${diff >= 0 ? '▲' : '▼'}${Math.abs(pct)}%)` : ''}`;
-                  }
-                  return ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`;
-                },
-                afterBody: (items) => {
-                  const i = items[0].dataIndex;
-                  const a = valA[i] ?? 0;
-                  const b = valB[i] ?? 0;
-                  const diff = a - b;
-                  return [``, `Diferencia: ${diff >= 0 ? '+' : ''}${fmt(diff)}`];
-                }
-              }
-            }
-          },
-          scales: {
-            x: { grid: { display: false }, ticks: { maxTicksLimit: 15 } },
-            y: {
-              ticks: { callback: v => '$' + v.toLocaleString('es-SV') },
-              grid: { color: '#f0f0f0' }
-            }
-          }
-        }
-      });
-
-      // Resumen
-      const totalA = valA.reduce((s, v) => s + v, 0);
-      const totalB = valB.reduce((s, v) => s + v, 0);
-      const diff = totalA - totalB;
-      const pct  = totalB !== 0 ? ((diff / totalB) * 100).toFixed(1) : null;
-
-      document.getElementById('tr-total-a').textContent = fmt(totalA);
-      document.getElementById('tr-total-b').textContent = fmt(totalB);
-      document.getElementById('tr-dif').textContent = (diff >= 0 ? '+' : '') + fmt(diff);
-      document.getElementById('tr-pct').textContent = pct !== null ? `${diff >= 0 ? '▲' : '▼'} ${Math.abs(pct)}%` : '—';
-
-      const difCard = document.getElementById('tr-dif-card');
-      const pctCard = document.getElementById('tr-pct-card');
-      difCard.className = `tend-res-card ${diff >= 0 ? 'verde' : 'naranja'}`;
-      pctCard.className = `tend-res-card ${diff >= 0 ? 'verde' : 'naranja'}`;
-
-      document.getElementById('tend-resumen-wrap').style.display = 'block';
-      document.getElementById('tend-chart-card').style.display = 'block';
-      document.getElementById('estado-tendencias').textContent = '';
-    } catch (e) {
-      document.getElementById('estado-tendencias').textContent = 'Error: ' + e.message;
-    } finally {
-      document.getElementById('btn-tendencias').disabled = false;
-    }
-  }
-</script>
-
-<script>
-    const PROXY = 'https://vivapizza-proxy.onrender.com';
+  const PROXY = 'https://vivapizza-proxy.onrender.com';
   const fmt = n => new Intl.NumberFormat('es-SV', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(n);
   const fmtDate = s => new Date(s + 'T12:00:00').toLocaleDateString('es-SV', { day: 'numeric', month: 'short', year: 'numeric' });
   const toISO = d => d.toISOString().slice(0, 10);
 
-  // ── Navegación ─────────────────────────────────────────────────────────
-  function showPanel(id) {
+  function addDays(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return toISO(d); }
+  function restarAnio(iso) { const d = new Date(iso + 'T12:00:00'); d.setFullYear(d.getFullYear() - 1); return toISO(d); }
+  function hoy()        { return toISO(new Date()); }
+  function ayer()       { const d = new Date(); d.setDate(d.getDate()-1); return toISO(d); }
+  function inicioSem()  { const d = new Date(); d.setDate(d.getDate()-d.getDay()); return toISO(d); }
+  function inicioMes()  { const d = new Date(); d.setDate(1); return toISO(d); }
+
+  function fmtLabel(label) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(label)) return fmtDate(label);
+    if (/^\d{4}-\d{2}$/.test(label)) { const [y,m]=label.split('-'); return new Date(y,m-1,1).toLocaleDateString('es-SV',{month:'short',year:'numeric'}); }
+    return label;
+  }
+
+  // ── Navegación ────────────────────────────────────────────────────────
+  function showPanel(id, el) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
     document.getElementById('panel-' + id).classList.add('active');
-    event.currentTarget.classList.add('active');
+    el.classList.add('active');
   }
 
-  // ── Comparador ─────────────────────────────────────────────────────────
-  function addDays(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return toISO(d); }
-  function restarAnio(iso) { const d = new Date(iso + 'T12:00:00'); d.setFullYear(d.getFullYear() - 1); return toISO(d); }
-  function hoy() { return toISO(new Date()); }
-  function ayer() { const d = new Date(); d.setDate(d.getDate() - 1); return toISO(d); }
-  function inicioSemana() { const d = new Date(); d.setDate(d.getDate() - d.getDay()); return toISO(d); }
-  function inicioMes() { const d = new Date(); d.setDate(1); return toISO(d); }
-
+  // ── Comparador ────────────────────────────────────────────────────────
   function sincronizarB() {
     const aFrom = document.getElementById('a-from').value;
     const aTo   = document.getElementById('a-to').value;
     if (aFrom) document.getElementById('b-from').value = restarAnio(aFrom);
     if (aTo)   document.getElementById('b-to').value   = restarAnio(aTo);
   }
-
   function setRapido(tipo) {
-    const f = document.getElementById('a-from');
-    const t = document.getElementById('a-to');
-    if (tipo === 'hoy')    { f.value = hoy(); t.value = hoy(); }
-    if (tipo === 'ayer')   { f.value = ayer(); t.value = ayer(); }
-    if (tipo === 'semana') { f.value = inicioSemana(); t.value = hoy(); }
-    if (tipo === 'mes')    { f.value = inicioMes(); t.value = hoy(); }
+    const f = document.getElementById('a-from'), t = document.getElementById('a-to');
+    if (tipo==='hoy')    { f.value=hoy();       t.value=hoy(); }
+    if (tipo==='ayer')   { f.value=ayer();      t.value=ayer(); }
+    if (tipo==='semana') { f.value=inicioSem(); t.value=hoy(); }
+    if (tipo==='mes')    { f.value=inicioMes(); t.value=hoy(); }
     sincronizarB();
   }
-
   setRapido('ayer');
 
-  async function fetchTotal(sucursal, from, to) {
-    const toApi = addDays(to, 1);
-    const res = await fetch(`${PROXY}/${sucursal}/orden-trabajo/total?from=${from}&to=${toApi}`);
-    if (!res.ok) throw new Error('Error ' + res.status);
+  async function fetchTotal(suc, from, to) {
+    const res = await fetch(`${PROXY}/${suc}/orden-trabajo/total?from=${from}&to=${addDays(to,1)}`);
+    if (!res.ok) throw new Error('Error');
     return (await res.json()).total;
   }
 
   function renderDif(prefix, totalA, totalB) {
     const diff = totalA - totalB;
-    const pct = totalB !== 0 ? ((diff / totalB) * 100).toFixed(1) : null;
+    const pct = totalB !== 0 ? ((diff/totalB)*100).toFixed(1) : null;
     const el = document.getElementById(`${prefix}-dif`);
     el.className = 'diferencia' + (diff < 0 ? ' negativa' : '');
     document.getElementById(`${prefix}-dif-label`).textContent = diff >= 0 ? 'Período A mayor en' : 'Período A menor en';
     document.getElementById(`${prefix}-dif-valor`).textContent = fmt(Math.abs(diff));
-    document.getElementById(`${prefix}-dif-pct`).textContent = pct !== null ? `${diff >= 0 ? '▲' : '▼'} ${Math.abs(pct)}% vs período B` : '';
+    document.getElementById(`${prefix}-dif-pct`).textContent = pct !== null ? `${diff>=0?'▲':'▼'} ${Math.abs(pct)}% vs período B` : '';
   }
 
   async function consultar() {
-    const aFrom = document.getElementById('a-from').value;
-    const aTo   = document.getElementById('a-to').value;
-    const bFrom = document.getElementById('b-from').value;
-    const bTo   = document.getElementById('b-to').value;
-
-    if (!aFrom || !aTo || !bFrom || !bTo) { document.getElementById('estado-comparador').textContent = 'Completa todos los campos de fecha.'; return; }
-
-    document.getElementById('estado-comparador').textContent = 'Consultando...';
-    document.getElementById('btn-comparar').disabled = true;
-    document.getElementById('total-combinado-wrap').style.display = 'none';
-
-    const periodoA = aFrom === aTo ? fmtDate(aFrom) : `${fmtDate(aFrom)} – ${fmtDate(aTo)}`;
-    const periodoB = bFrom === bTo ? fmtDate(bFrom) : `${fmtDate(bFrom)} – ${fmtDate(bTo)}`;
-
-    ['arm-a-total','arm-b-total','izl-a-total','izl-b-total'].forEach(id => document.getElementById(id).textContent = '...');
-    ['arm-dif','izl-dif'].forEach(id => document.getElementById(id).className = 'diferencia oculta');
-    document.getElementById('arm-a-periodo').textContent = periodoA;
-    document.getElementById('arm-b-periodo').textContent = periodoB;
-    document.getElementById('izl-a-periodo').textContent = periodoA;
-    document.getElementById('izl-b-periodo').textContent = periodoB;
-
-    const [resArmA, resArmB, resIzlA, resIzlB] = await Promise.allSettled([
-      fetchTotal('armenia', aFrom, aTo),
-      fetchTotal('armenia', bFrom, bTo),
-      fetchTotal('izalco',  aFrom, aTo),
-      fetchTotal('izalco',  bFrom, bTo),
-    ]);
-
-    const armA = resArmA.status === 'fulfilled' ? resArmA.value : null;
-    const armB = resArmB.status === 'fulfilled' ? resArmB.value : null;
-    document.getElementById('arm-a-total').textContent = armA !== null ? fmt(armA) : '—';
-    document.getElementById('arm-b-total').textContent = armB !== null ? fmt(armB) : '—';
-    if (armA !== null && armB !== null) renderDif('arm', armA, armB);
-
-    const izlA = resIzlA.status === 'fulfilled' ? resIzlA.value : null;
-    const izlB = resIzlB.status === 'fulfilled' ? resIzlB.value : null;
-    document.getElementById('izl-a-total').textContent = izlA !== null ? fmt(izlA) : '—';
-    document.getElementById('izl-b-total').textContent = izlB !== null ? fmt(izlB) : '—';
-    if (izlA !== null && izlB !== null) renderDif('izl', izlA, izlB);
-
-    if (armA !== null && izlA !== null && armB !== null && izlB !== null) {
-      document.getElementById('tc-a-valor').textContent = fmt(armA + izlA);
-      document.getElementById('tc-a-periodo').textContent = periodoA;
-      document.getElementById('tc-b-valor').textContent = fmt(armB + izlB);
-      document.getElementById('tc-b-periodo').textContent = periodoB;
-      document.getElementById('total-combinado-wrap').style.display = 'block';
+    const aFrom=document.getElementById('a-from').value, aTo=document.getElementById('a-to').value;
+    const bFrom=document.getElementById('b-from').value, bTo=document.getElementById('b-to').value;
+    if (!aFrom||!aTo||!bFrom||!bTo) { document.getElementById('estado-comparador').textContent='Completa todos los campos.'; return; }
+    document.getElementById('estado-comparador').textContent='Consultando...';
+    document.getElementById('btn-comparar').disabled=true;
+    document.getElementById('total-combinado-wrap').style.display='none';
+    ['arm-a-total','arm-b-total','izl-a-total','izl-b-total'].forEach(id=>document.getElementById(id).textContent='...');
+    ['arm-dif','izl-dif'].forEach(id=>document.getElementById(id).className='diferencia oculta');
+    const periodoA = aFrom===aTo ? fmtDate(aFrom) : `${fmtDate(aFrom)} – ${fmtDate(aTo)}`;
+    const periodoB = bFrom===bTo ? fmtDate(bFrom) : `${fmtDate(bFrom)} – ${fmtDate(bTo)}`;
+    ['arm-a-periodo','izl-a-periodo'].forEach(id=>document.getElementById(id).textContent=periodoA);
+    ['arm-b-periodo','izl-b-periodo'].forEach(id=>document.getElementById(id).textContent=periodoB);
+    const [rAA,rAB,rIA,rIB] = await Promise.allSettled([fetchTotal('armenia',aFrom,aTo),fetchTotal('armenia',bFrom,bTo),fetchTotal('izalco',aFrom,aTo),fetchTotal('izalco',bFrom,bTo)]);
+    const armA=rAA.status==='fulfilled'?rAA.value:null, armB=rAB.status==='fulfilled'?rAB.value:null;
+    const izlA=rIA.status==='fulfilled'?rIA.value:null, izlB=rIB.status==='fulfilled'?rIB.value:null;
+    document.getElementById('arm-a-total').textContent=armA!==null?fmt(armA):'—';
+    document.getElementById('arm-b-total').textContent=armB!==null?fmt(armB):'—';
+    if (armA!==null&&armB!==null) renderDif('arm',armA,armB);
+    document.getElementById('izl-a-total').textContent=izlA!==null?fmt(izlA):'—';
+    document.getElementById('izl-b-total').textContent=izlB!==null?fmt(izlB):'—';
+    if (izlA!==null&&izlB!==null) renderDif('izl',izlA,izlB);
+    if (armA!==null&&izlA!==null&&armB!==null&&izlB!==null) {
+      document.getElementById('tc-a-valor').textContent=fmt(armA+izlA);
+      document.getElementById('tc-a-periodo').textContent=periodoA;
+      document.getElementById('tc-b-valor').textContent=fmt(armB+izlB);
+      document.getElementById('tc-b-periodo').textContent=periodoB;
+      document.getElementById('total-combinado-wrap').style.display='block';
     }
-
-    document.getElementById('estado-comparador').textContent = '';
-    document.getElementById('btn-comparar').disabled = false;
+    document.getElementById('estado-comparador').textContent='';
+    document.getElementById('btn-comparar').disabled=false;
   }
 
-  // ── Gráficas ───────────────────────────────────────────────────────────
-  let agrupacion = 'diario';
-  let sucursalesActivas = { armenia: true, izalco: true, combinado: true };
-  let miChart = null;
-
-  // Defaults panel gráficas
-  document.getElementById('g-from').value = inicioMes();
-  document.getElementById('g-to').value   = hoy();
-  document.getElementById('g-year').value = new Date().getFullYear();
-  document.getElementById('g-year-from').value = new Date().getFullYear() - 2;
-  document.getElementById('g-year-to').value   = new Date().getFullYear();
+  // ── Gráficas ─────────────────────────────────────────────────────────
+  let agrupacion='diario', sucursalesActivas={armenia:true,izalco:true,combinado:true}, miChart=null;
+  document.getElementById('g-from').value=inicioMes();
+  document.getElementById('g-to').value=hoy();
+  document.getElementById('g-year').value=new Date().getFullYear();
+  document.getElementById('g-year-from').value=new Date().getFullYear()-2;
+  document.getElementById('g-year-to').value=new Date().getFullYear();
 
   function setAgrupacion(tipo, btn) {
-    agrupacion = tipo;
-    document.querySelectorAll('.agrupacion-btns button').forEach(b => {
-      if (b.closest('#panel-graficas') && !b.id.startsWith('btn-suc')) b.classList.remove('active');
-    });
+    agrupacion=tipo;
+    document.querySelectorAll('#panel-graficas .agrupacion-btns:first-of-type button').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-
-    document.getElementById('controles-fecha').style.display    = (tipo === 'diario' || tipo === 'semanal') ? 'grid' : 'none';
-    document.getElementById('controles-anio').style.display     = tipo === 'mensual' ? 'block' : 'none';
-    document.getElementById('controles-anual-rango').style.display = tipo === 'anual' ? 'block' : 'none';
+    document.getElementById('controles-fecha').style.display=(tipo==='diario'||tipo==='semanal')?'grid':'none';
+    document.getElementById('controles-anio').style.display=tipo==='mensual'?'block':'none';
+    document.getElementById('controles-anual-rango').style.display=tipo==='anual'?'block':'none';
   }
+  function toggleSucursal(suc, btn) { sucursalesActivas[suc]=!sucursalesActivas[suc]; btn.classList.toggle('active',sucursalesActivas[suc]); }
 
-  function toggleSucursal(suc, btn) {
-    sucursalesActivas[suc] = !sucursalesActivas[suc];
-    btn.classList.toggle('active', sucursalesActivas[suc]);
-  }
-
-  async function fetchVentas(sucursal) {
-    let url = `${PROXY}/${sucursal}/ventas?agrupacion=${agrupacion}`;
-    if (agrupacion === 'diario' || agrupacion === 'semanal') {
-      url += `&from=${document.getElementById('g-from').value}&to=${document.getElementById('g-to').value}`;
-    } else if (agrupacion === 'mensual') {
-      url += `&year=${document.getElementById('g-year').value}`;
-    } else if (agrupacion === 'anual') {
-      url += `&from=${document.getElementById('g-year-from').value}-01-01&to=${document.getElementById('g-year-to').value}-12-31`;
-    }
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('Error ' + res.status);
+  async function fetchVentas(suc) {
+    let url=`${PROXY}/${suc}/ventas?agrupacion=${agrupacion}`;
+    if (agrupacion==='diario'||agrupacion==='semanal') url+=`&from=${document.getElementById('g-from').value}&to=${document.getElementById('g-to').value}`;
+    else if (agrupacion==='mensual') url+=`&year=${document.getElementById('g-year').value}`;
+    else if (agrupacion==='anual') url+=`&from=${document.getElementById('g-year-from').value}-01-01&to=${document.getElementById('g-year-to').value}-12-31`;
+    const res=await fetch(url); if (!res.ok) throw new Error('Error '+res.status);
     return (await res.json()).puntos;
   }
 
-  function fmtLabel(label) {
-    if (/^\d{4}-\d{2}-\d{2}$/.test(label)) return fmtDate(label);
-    if (/^\d{4}-\d{2}$/.test(label)) {
-      const [y, m] = label.split('-');
-      return new Date(y, m - 1, 1).toLocaleDateString('es-SV', { month: 'short', year: 'numeric' });
-    }
-    return label;
+  async function graficar() {
+    const estado=document.getElementById('estado-graficas'), btn=document.getElementById('btn-graficar');
+    estado.textContent='Consultando datos...'; btn.disabled=true;
+    try {
+      const pA = (sucursalesActivas.armenia||sucursalesActivas.combinado) ? await fetchVentas('armenia') : null;
+      const pI = (sucursalesActivas.izalco||sucursalesActivas.combinado)  ? await fetchVentas('izalco')  : null;
+      const labels=(pA||pI).map(p=>fmtLabel(p.label));
+      const datasets=[];
+      if (sucursalesActivas.armenia&&pA) datasets.push({type:'bar',label:'🔴 Armenia',data:pA.map(p=>p.total),backgroundColor:'rgba(230,51,18,0.7)',borderColor:'#e63312',borderWidth:1,borderRadius:4,order:2});
+      if (sucursalesActivas.izalco&&pI)  datasets.push({type:'bar',label:'🟠 Izalco',data:pI.map(p=>p.total),backgroundColor:'rgba(245,166,35,0.7)',borderColor:'#f5a623',borderWidth:1,borderRadius:4,order:2});
+      if (sucursalesActivas.combinado&&pA&&pI) datasets.push({type:'line',label:'⚫ Combinado',data:pA.map((p,i)=>p.total+(pI[i]?.total??0)),borderColor:'#111',backgroundColor:'rgba(0,0,0,0.05)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#111',tension:0.3,fill:false,order:1});
+      if (miChart) miChart.destroy();
+      miChart=new Chart(document.getElementById('miGrafica').getContext('2d'),{data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top'},tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`}}},scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>'$'+v.toLocaleString('es-SV')},grid:{color:'#f0f0f0'}}}}});
+      document.getElementById('chart-card').style.display='block';
+      const grid=document.getElementById('resumen-grid'); grid.innerHTML='';
+      const tA=pA?pA.reduce((s,p)=>s+p.total,0):null, tI=pI?pI.reduce((s,p)=>s+p.total,0):null;
+      if (sucursalesActivas.armenia&&tA!==null) grid.innerHTML+=`<div class="res-mini armenia"><div class="rm-label">🔴 Armenia</div><div class="rm-valor">${fmt(tA)}</div></div>`;
+      if (sucursalesActivas.izalco&&tI!==null)  grid.innerHTML+=`<div class="res-mini izalco"><div class="rm-label">🟠 Izalco</div><div class="rm-valor">${fmt(tI)}</div></div>`;
+      if (sucursalesActivas.combinado&&tA!==null&&tI!==null) grid.innerHTML+=`<div class="res-mini"><div class="rm-label">⚫ Combinado</div><div class="rm-valor">${fmt(tA+tI)}</div></div>`;
+      document.getElementById('resumen-graficas').style.display='block';
+      estado.textContent='';
+    } catch(e) { estado.textContent='Error: '+e.message; }
+    finally { btn.disabled=false; }
   }
 
-  async function graficar() {
-    const estado = document.getElementById('estado-graficas');
-    const btn = document.getElementById('btn-graficar');
-    estado.textContent = 'Consultando datos...';
-    btn.disabled = true;
+  // ── Tendencias ────────────────────────────────────────────────────────
+  let tAgrup = 'diario';
+  const tendCharts = {};
+
+  function sincronizarTB() {
+    const f=document.getElementById('t-a-from').value, t=document.getElementById('t-a-to').value;
+    if (f) document.getElementById('t-b-from').value=restarAnio(f);
+    if (t) document.getElementById('t-b-to').value=restarAnio(t);
+  }
+  function setTRapido(per, tipo) {
+    const f=document.getElementById(`t-${per}-from`), t=document.getElementById(`t-${per}-to`);
+    if (tipo==='hoy')    { f.value=hoy();       t.value=hoy(); }
+    if (tipo==='ayer')   { f.value=ayer();      t.value=ayer(); }
+    if (tipo==='semana') { f.value=inicioSem(); t.value=hoy(); }
+    if (tipo==='mes')    { f.value=inicioMes(); t.value=hoy(); }
+    if (per==='a') sincronizarTB();
+  }
+  function setTAgrup(tipo, btn) {
+    tAgrup=tipo;
+    document.querySelectorAll('#t-agrup-btns button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // Default: A = este mes, B = mes anterior
+  document.getElementById('t-a-from').value=inicioMes();
+  document.getElementById('t-a-to').value=hoy();
+  sincronizarTB();
+
+  async function fetchVentasTend(suc, from, to) {
+    const url=`${PROXY}/${suc}/ventas?agrupacion=${tAgrup}&from=${from}&to=${to}`;
+    const res=await fetch(url); if (!res.ok) throw new Error('Error '+res.status);
+    return (await res.json()).puntos;
+  }
+
+  function buildTendChart(canvasId, puntosA, puntosB) {
+    if (tendCharts[canvasId]) tendCharts[canvasId].destroy();
+    const maxLen=Math.max(puntosA.length, puntosB.length);
+    const labels=Array.from({length:maxLen},(_,i)=>`${i+1}`);
+    const valA=puntosA.map(p=>p.total);
+    const valB=puntosB.map(p=>p.total);
+    tendCharts[canvasId]=new Chart(document.getElementById(canvasId).getContext('2d'),{
+      type:'line',
+      data:{labels,datasets:[
+        {label:'📘 Período A',data:valA,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,0.06)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#2563eb',tension:0.35,fill:false},
+        {label:'📕 Período B',data:valB,borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,0.06)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#dc2626',tension:0.35,fill:false},
+        {label:'_band',data:valA,borderColor:'transparent',backgroundColor:'rgba(37,99,235,0.06)',borderWidth:0,pointRadius:0,tension:0.35,fill:'+1'},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{
+          legend:{position:'top',labels:{filter:item=>item.text!=='_band'}},
+          tooltip:{callbacks:{
+            title:(items)=>{
+              const i=items[0].dataIndex;
+              const lA=puntosA[i]?fmtLabel(puntosA[i].label):'';
+              const lB=puntosB[i]?fmtLabel(puntosB[i].label):'';
+              return[`A: ${lA}`,`B: ${lB}`];
+            },
+            label:ctx=>{
+              if(ctx.dataset.label==='_band') return null;
+              return ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`;
+            },
+            afterBody:(items)=>{
+              const i=items[0].dataIndex;
+              const diff=(valA[i]??0)-(valB[i]??0);
+              return['',`Dif: ${diff>=0?'+':''}${fmt(diff)}`];
+            }
+          }}
+        },
+        scales:{
+          x:{grid:{display:false},ticks:{maxTicksLimit:12,font:{size:10}}},
+          y:{ticks:{callback:v=>'$'+v.toLocaleString('es-SV'),font:{size:10}},grid:{color:'#f0f0f0'}}
+        }
+      }
+    });
+    return {valA, valB};
+  }
+
+  function setTrm(prefix, valA, valB) {
+    const totalA=valA.reduce((s,v)=>s+v,0), totalB=valB.reduce((s,v)=>s+v,0);
+    const diff=totalA-totalB, pct=totalB!==0?((diff/totalB)*100).toFixed(1):null;
+    document.getElementById(`tr-${prefix}-a`).textContent=fmt(totalA);
+    document.getElementById(`tr-${prefix}-b`).textContent=fmt(totalB);
+    document.getElementById(`tr-${prefix}-dif`).textContent=(diff>=0?'+':'')+fmt(diff);
+    document.getElementById(`tr-${prefix}-pct`).textContent=pct!==null?`${diff>=0?'▲':'▼'} ${Math.abs(pct)}%`:'—';
+    document.getElementById(`tr-${prefix}-dif-card`).className=`trm ${diff>=0?'verde':'rojo'}`;
+    document.getElementById(`tr-${prefix}-pct-card`).className=`trm ${diff>=0?'verde':'rojo'}`;
+    return {totalA, totalB};
+  }
+
+  async function graficarTendencias() {
+    const aFrom=document.getElementById('t-a-from').value, aTo=document.getElementById('t-a-to').value;
+    const bFrom=document.getElementById('t-b-from').value, bTo=document.getElementById('t-b-to').value;
+    if (!aFrom||!aTo||!bFrom||!bTo) { document.getElementById('estado-tendencias').textContent='Completa todos los campos.'; return; }
+    document.getElementById('estado-tendencias').textContent='Consultando...';
+    document.getElementById('btn-tendencias').disabled=true;
+    document.getElementById('tend-sucursales-wrap').style.display='none';
+    document.getElementById('tend-combinado-wrap').style.display='none';
+    document.getElementById('tend-total-wrap').style.display='none';
 
     try {
-      const peticiones = [];
-      if (sucursalesActivas.armenia || sucursalesActivas.combinado) peticiones.push(fetchVentas('armenia'));
-      else peticiones.push(Promise.resolve(null));
-      if (sucursalesActivas.izalco || sucursalesActivas.combinado) peticiones.push(fetchVentas('izalco'));
-      else peticiones.push(Promise.resolve(null));
+      const [armA,armB,izlA,izlB]=await Promise.all([
+        fetchVentasTend('armenia',aFrom,aTo),fetchVentasTend('armenia',bFrom,bTo),
+        fetchVentasTend('izalco',aFrom,aTo), fetchVentasTend('izalco',bFrom,bTo),
+      ]);
 
-      const [puntosArm, puntosIzl] = await Promise.all(peticiones);
+      const {valA:vAA,valB:vAB}=buildTendChart('tend-chart-armenia',armA,armB);
+      const {valA:vIA,valB:vIB}=buildTendChart('tend-chart-izalco',izlA,izlB);
 
-      // Labels unificados
-      const labels = (puntosArm || puntosIzl).map(p => fmtLabel(p.label));
-      const datasets = [];
+      const {totalA:tAA,totalB:tAB}=setTrm('arm',vAA,vAB);
+      const {totalA:tIA,totalB:tIB}=setTrm('izl',vIA,vIB);
 
-      if (sucursalesActivas.armenia && puntosArm) {
-        datasets.push({
-          type: 'bar', label: '🔴 Armenia',
-          data: puntosArm.map(p => p.total),
-          backgroundColor: 'rgba(230,51,18,0.7)', borderColor: '#e63312',
-          borderWidth: 1, borderRadius: 4, order: 2,
-        });
-      }
-      if (sucursalesActivas.izalco && puntosIzl) {
-        datasets.push({
-          type: 'bar', label: '🟠 Izalco',
-          data: puntosIzl.map(p => p.total),
-          backgroundColor: 'rgba(245,166,35,0.7)', borderColor: '#f5a623',
-          borderWidth: 1, borderRadius: 4, order: 2,
-        });
-      }
-      if (sucursalesActivas.combinado && puntosArm && puntosIzl) {
-        const combinado = puntosArm.map((p, i) => p.total + (puntosIzl[i]?.total ?? 0));
-        datasets.push({
-          type: 'line', label: '⚫ Combinado',
-          data: combinado,
-          borderColor: '#111', backgroundColor: 'rgba(0,0,0,0.05)',
-          borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#111',
-          tension: 0.3, fill: false, order: 1,
-        });
-      }
+      // Combinado
+      const combA=armA.map((p,i)=>({label:p.label,total:p.total+(izlA[i]?.total??0)}));
+      const combB=armB.map((p,i)=>({label:p.label,total:p.total+(izlB[i]?.total??0)}));
+      buildTendChart('tend-chart-combinado',combA,combB);
+      setTrm('comb',combA.map(p=>p.total),combB.map(p=>p.total));
 
-      // Destruir chart anterior
-      if (miChart) miChart.destroy();
+      // Totales combinados
+      const periodoA=aFrom===aTo?fmtDate(aFrom):`${fmtDate(aFrom)} – ${fmtDate(aTo)}`;
+      const periodoB=bFrom===bTo?fmtDate(bFrom):`${fmtDate(bFrom)} – ${fmtDate(bTo)}`;
+      document.getElementById('ttc-a-valor').textContent=fmt(tAA+tIA);
+      document.getElementById('ttc-a-periodo').textContent=periodoA;
+      document.getElementById('ttc-b-valor').textContent=fmt(tAB+tIB);
+      document.getElementById('ttc-b-periodo').textContent=periodoB;
 
-      const ctx = document.getElementById('miGrafica').getContext('2d');
-      miChart = new Chart(ctx, {
-        data: { labels, datasets },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          interaction: { mode: 'index', intersect: false },
-          plugins: {
-            legend: { position: 'top' },
-            tooltip: {
-              callbacks: {
-                label: ctx => ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`
-              }
-            }
-          },
-          scales: {
-            x: { grid: { display: false } },
-            y: {
-              ticks: { callback: v => '$' + v.toLocaleString('es-SV') },
-              grid: { color: '#f0f0f0' }
-            }
-          }
-        }
-      });
-
-      document.getElementById('chart-card').style.display = 'block';
-
-      // Resumen
-      const grid = document.getElementById('resumen-grid');
-      grid.innerHTML = '';
-      const totalArm = puntosArm ? puntosArm.reduce((s, p) => s + p.total, 0) : null;
-      const totalIzl = puntosIzl ? puntosIzl.reduce((s, p) => s + p.total, 0) : null;
-
-      if (sucursalesActivas.armenia && totalArm !== null)
-        grid.innerHTML += `<div class="res-mini armenia"><div class="rm-label">🔴 Armenia</div><div class="rm-valor">${fmt(totalArm)}</div></div>`;
-      if (sucursalesActivas.izalco && totalIzl !== null)
-        grid.innerHTML += `<div class="res-mini izalco"><div class="rm-label">🟠 Izalco</div><div class="rm-valor">${fmt(totalIzl)}</div></div>`;
-      if (sucursalesActivas.combinado && totalArm !== null && totalIzl !== null)
-        grid.innerHTML += `<div class="res-mini combinado"><div class="rm-label">⚫ Combinado</div><div class="rm-valor">${fmt(totalArm + totalIzl)}</div></div>`;
-
-      document.getElementById('resumen-graficas').style.display = 'block';
-      estado.textContent = '';
-    } catch (e) {
-      estado.textContent = 'Error al consultar. ' + e.message;
+      document.getElementById('tend-total-wrap').style.display='block';
+      document.getElementById('tend-sucursales-wrap').style.display='grid';
+      document.getElementById('tend-combinado-wrap').style.display='block';
+      document.getElementById('estado-tendencias').textContent='';
+    } catch(e) {
+      document.getElementById('estado-tendencias').textContent='Error: '+e.message;
     } finally {
-      btn.disabled = false;
+      document.getElementById('btn-tendencias').disabled=false;
     }
   }
-</script>
-
 </script>
 </body>
 </html>

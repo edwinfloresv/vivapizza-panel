@@ -46,12 +46,16 @@
 
     .comparacion { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
     .res-bloque { border-radius: 8px; padding: 0.75rem 1rem; background: #f9f9f9; }
+    .res-bloque.per-a { background: #f0f9ff; border: 1px solid #bae6fd; }
     .res-bloque.per-b { background: #fefce8; border: 1px solid #fde68a; }
     .res-bloque .etiqueta { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; margin-bottom: 3px; }
+    .res-bloque.per-a .etiqueta { color: #0369a1; }
     .res-bloque.per-b .etiqueta { color: #92400e; }
     .res-bloque .periodo-txt { font-size: 11px; color: #aaa; margin-bottom: 4px; }
+    .res-bloque.per-a .periodo-txt { color: #0284c7; }
     .res-bloque.per-b .periodo-txt { color: #a16207; }
     .res-bloque .total { font-size: 22px; font-weight: 700; color: #111; }
+    .res-bloque.per-a .total { color: #0c4a6e; }
     .res-bloque.per-b .total { color: #78350f; }
     .res-bloque .loading { font-size: 13px; color: #ccc; }
 
@@ -114,7 +118,7 @@
     <div class="sucursal-panel armenia">
       <div class="sucursal-nombre">🔴 Armenia</div>
       <div class="comparacion">
-        <div class="res-bloque">
+        <div class="res-bloque per-a">
           <div class="etiqueta">Período A</div>
           <div class="periodo-txt" id="arm-a-periodo"></div>
           <div class="total loading" id="arm-a-total">—</div>
@@ -136,7 +140,7 @@
     <div class="sucursal-panel izalco">
       <div class="sucursal-nombre">🟠 Izalco</div>
       <div class="comparacion">
-        <div class="res-bloque">
+        <div class="res-bloque per-a">
           <div class="etiqueta">Período A</div>
           <div class="periodo-txt" id="izl-a-periodo"></div>
           <div class="total loading" id="izl-a-total">—</div>

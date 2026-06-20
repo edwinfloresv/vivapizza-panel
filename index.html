@@ -130,6 +130,31 @@
     .res-mini.armenia .rm-valor { color: #e63312; }
     .res-mini.izalco  .rm-valor { color: #d97706; }
     .res-mini.combinado .rm-valor { color: #111; }
+
+    /* ── Tendencias (panel 3) ── */
+    .tend-periodos { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    @media (max-width: 600px) { .tend-periodos { grid-template-columns: 1fr; } }
+    .tend-bloque { border: 1px solid #eee; border-radius: 10px; padding: 1rem 1.25rem; }
+    .tend-bloque.ta { border-left: 3px solid #2563eb; }
+    .tend-bloque.tb { border-left: 3px solid #dc2626; }
+    .tend-bloque.ta input[type="date"] { background: #eff6ff; }
+    .tend-bloque.tb input[type="date"] { background: #fff1f2; }
+    .tend-accesos { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+    .tend-accesos button { font-size: 11px; padding: 3px 10px; border: 1px solid #ddd; border-radius: 20px; background: #fff; cursor: pointer; color: #555; }
+    .tend-accesos button:hover { background: #f0f0f0; }
+    .tend-resumen { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+    .tend-res-card { border-radius: 10px; padding: 1rem 1.25rem; text-align: center; }
+    .tend-res-card.azul  { background: #eff6ff; border: 1px solid #bfdbfe; }
+    .tend-res-card.rojo  { background: #fff1f2; border: 1px solid #fecdd3; }
+    .tend-res-card.verde { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .tend-res-card.naranja { background: #fef2f2; border: 1px solid #fecaca; }
+    .tend-res-card .tr-label { font-size: 11px; color: #666; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .tend-res-card .tr-valor { font-size: 22px; font-weight: 700; }
+    .tend-res-card.azul  .tr-valor { color: #1d4ed8; }
+    .tend-res-card.rojo  .tr-valor { color: #dc2626; }
+    .tend-res-card.verde .tr-valor { color: #16a34a; }
+    .tend-res-card.naranja .tr-valor { color: #dc2626; }
+    .tend-chart-container { position: relative; height: 360px; }
   </style>
 </head>
 <body>
@@ -143,6 +168,9 @@
     </div>
     <div class="menu-item" onclick="showPanel('graficas')">
       <span class="icon">📊</span> Gráficas
+    </div>
+    <div class="menu-item" onclick="showPanel('tendencias')">
+      <span class="icon">📈</span> Tendencias
     </div>
   </div>
 </nav>
@@ -298,10 +326,309 @@
     </div>
   </div>
 
+  <!-- ══ PANEL 3: Tendencias ══ -->
+  <div class="panel" id="panel-tendencias">
+    <h2>Comparador de tendencias</h2>
+
+    <div class="card">
+      <!-- Sucursal -->
+      <div style="margin-bottom:1rem;">
+        <div class="seccion-titulo" style="margin-bottom:8px;">Sucursal</div>
+        <div class="agrupacion-btns">
+          <button class="active" id="t-btn-armenia"   onclick="setTendSucursal('armenia', this)">🔴 Armenia</button>
+          <button id="t-btn-izalco"    onclick="setTendSucursal('izalco', this)">🟠 Izalco</button>
+          <button id="t-btn-combinado" onclick="setTendSucursal('combinado', this)">⚫ Combinado</button>
+        </div>
+      </div>
+
+      <!-- Agrupación -->
+      <div style="margin-bottom:1rem;">
+        <div class="seccion-titulo" style="margin-bottom:8px;">Agrupación</div>
+        <div class="agrupacion-btns" id="tend-agrup-btns">
+          <button class="active" onclick="setTendAgrup('diario', this)">Diario</button>
+          <button onclick="setTendAgrup('semanal', this)">Semanal</button>
+          <button onclick="setTendAgrup('mensual', this)">Mensual</button>
+        </div>
+      </div>
+
+      <!-- Períodos -->
+      <div class="tend-periodos">
+        <div class="tend-bloque ta">
+          <div class="seccion-titulo">📘 Período A</div>
+          <div class="grid-2">
+            <div><label>Desde</label><input type="date" id="t-a-from" /></div>
+            <div><label>Hasta</label><input type="date" id="t-a-to" /></div>
+          </div>
+          <div class="tend-accesos">
+            <button onclick="setTendRapido('a','semana')">Esta semana</button>
+            <button onclick="setTendRapido('a','mes')">Este mes</button>
+            <button onclick="setTendRapido('a','mes-ant')">Mes anterior</button>
+          </div>
+        </div>
+        <div class="tend-bloque tb">
+          <div class="seccion-titulo">📕 Período B</div>
+          <div class="grid-2">
+            <div><label>Desde</label><input type="date" id="t-b-from" /></div>
+            <div><label>Hasta</label><input type="date" id="t-b-to" /></div>
+          </div>
+          <div class="tend-accesos">
+            <button onclick="setTendRapido('b','semana')">Esta semana</button>
+            <button onclick="setTendRapido('b','mes')">Este mes</button>
+            <button onclick="setTendRapido('b','mes-ant')">Mes anterior</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" id="btn-tendencias" onclick="graficarTendencias()">Comparar tendencias</button>
+      <div class="estado-txt" id="estado-tendencias"></div>
+    </div>
+
+    <!-- Resumen -->
+    <div id="tend-resumen-wrap" style="display:none; margin-bottom:1.25rem;">
+      <div class="tend-resumen">
+        <div class="tend-res-card azul">
+          <div class="tr-label">📘 Total período A</div>
+          <div class="tr-valor" id="tr-total-a">—</div>
+        </div>
+        <div class="tend-res-card rojo">
+          <div class="tr-label">📕 Total período B</div>
+          <div class="tr-valor" id="tr-total-b">—</div>
+        </div>
+        <div class="tend-res-card" id="tr-dif-card">
+          <div class="tr-label">Diferencia</div>
+          <div class="tr-valor" id="tr-dif">—</div>
+        </div>
+        <div class="tend-res-card" id="tr-pct-card">
+          <div class="tr-label">Variación</div>
+          <div class="tr-valor" id="tr-pct">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfica -->
+    <div class="card" id="tend-chart-card" style="display:none;">
+      <div class="tend-chart-container">
+        <canvas id="tendGrafica"></canvas>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <script>
-  const PROXY = 'https://vivapizza-proxy.onrender.com';
+  // ══ JS TENDENCIAS ══════════════════════════════════════════════════════
+
+  let tendSucursal = 'armenia';
+  let tendAgrup = 'diario';
+  let tendChart = null;
+
+  // Defaults
+  const _hoy = () => toISO(new Date());
+  const _ayer = () => { const d = new Date(); d.setDate(d.getDate()-1); return toISO(d); };
+  const _inicioMes = () => { const d = new Date(); d.setDate(1); return toISO(d); };
+  const _inicioMesAnt = () => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth()-1); return toISO(d); };
+  const _finMesAnt = () => { const d = new Date(); d.setDate(0); return toISO(d); };
+  const _inicioSemana = () => { const d = new Date(); d.setDate(d.getDate()-d.getDay()); return toISO(d); };
+  const _inicioSemAnt = () => { const d = new Date(); d.setDate(d.getDate()-d.getDay()-7); return toISO(d); };
+  const _finSemAnt = () => { const d = new Date(); d.setDate(d.getDate()-d.getDay()-1); return toISO(d); };
+
+  // Período A = este mes, Período B = mes anterior
+  document.getElementById('t-a-from').value = _inicioMes();
+  document.getElementById('t-a-to').value   = _hoy();
+  document.getElementById('t-b-from').value = _inicioMesAnt();
+  document.getElementById('t-b-to').value   = _finMesAnt();
+
+  function setTendSucursal(suc, btn) {
+    tendSucursal = suc;
+    document.querySelectorAll('#panel-tendencias .agrupacion-btns:first-of-type button, #t-btn-armenia, #t-btn-izalco, #t-btn-combinado')
+      .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function setTendAgrup(tipo, btn) {
+    tendAgrup = tipo;
+    document.querySelectorAll('#tend-agrup-btns button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function setTendRapido(per, tipo) {
+    const f = document.getElementById(`t-${per}-from`);
+    const t = document.getElementById(`t-${per}-to`);
+    if (tipo === 'semana')   { f.value = _inicioSemana(); t.value = _hoy(); }
+    if (tipo === 'mes')      { f.value = _inicioMes();    t.value = _hoy(); }
+    if (tipo === 'mes-ant')  { f.value = _inicioMesAnt(); t.value = _finMesAnt(); }
+  }
+
+  async function fetchVentasRango(sucursal, from, to) {
+    // Construye puntos día por día / semana / mes según tendAgrup
+    let url = `${PROXY}/${sucursal}/ventas?agrupacion=${tendAgrup}&from=${from}&to=${to}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Error ' + res.status);
+    return (await res.json()).puntos;
+  }
+
+  async function fetchCombinado(from, to) {
+    const [pA, pI] = await Promise.all([
+      fetchVentasRango('armenia', from, to),
+      fetchVentasRango('izalco',  from, to),
+    ]);
+    return pA.map((p, i) => ({ label: p.label, total: p.total + (pI[i]?.total ?? 0) }));
+  }
+
+  async function getPuntos(from, to) {
+    if (tendSucursal === 'combinado') return fetchCombinado(from, to);
+    return fetchVentasRango(tendSucursal, from, to);
+  }
+
+  async function graficarTendencias() {
+    const aFrom = document.getElementById('t-a-from').value;
+    const aTo   = document.getElementById('t-a-to').value;
+    const bFrom = document.getElementById('t-b-from').value;
+    const bTo   = document.getElementById('t-b-to').value;
+
+    if (!aFrom || !aTo || !bFrom || !bTo) {
+      document.getElementById('estado-tendencias').textContent = 'Completa todos los campos.'; return;
+    }
+
+    document.getElementById('estado-tendencias').textContent = 'Consultando...';
+    document.getElementById('btn-tendencias').disabled = true;
+    document.getElementById('tend-resumen-wrap').style.display = 'none';
+    document.getElementById('tend-chart-card').style.display = 'none';
+
+    try {
+      const [puntosA, puntosB] = await Promise.all([getPuntos(aFrom, aTo), getPuntos(bFrom, bTo)]);
+
+      const maxLen = Math.max(puntosA.length, puntosB.length);
+      const labels = Array.from({ length: maxLen }, (_, i) => `Punto ${i + 1}`);
+
+      const valA = puntosA.map(p => p.total);
+      const valB = puntosB.map(p => p.total);
+
+      // Banda de diferencia (fill entre las dos líneas)
+      const datasets = [
+        {
+          label: '📘 Período A',
+          data: valA,
+          borderColor: '#2563eb',
+          backgroundColor: 'rgba(37,99,235,0.08)',
+          borderWidth: 2.5,
+          pointRadius: 4,
+          pointBackgroundColor: '#2563eb',
+          tension: 0.35,
+          fill: false,
+          order: 1,
+        },
+        {
+          label: '📕 Período B',
+          data: valB,
+          borderColor: '#dc2626',
+          backgroundColor: 'rgba(220,38,38,0.08)',
+          borderWidth: 2.5,
+          pointRadius: 4,
+          pointBackgroundColor: '#dc2626',
+          tension: 0.35,
+          fill: false,
+          order: 2,
+        },
+        // Banda sombreada entre A y B
+        {
+          label: 'Diferencia',
+          data: valA,
+          borderColor: 'transparent',
+          backgroundColor: 'rgba(37,99,235,0.07)',
+          borderWidth: 0,
+          pointRadius: 0,
+          tension: 0.35,
+          fill: '+1',
+          order: 3,
+        },
+      ];
+
+      if (tendChart) tendChart.destroy();
+      const ctx = document.getElementById('tendGrafica').getContext('2d');
+      tendChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                filter: item => item.text !== 'Diferencia'
+              }
+            },
+            tooltip: {
+              callbacks: {
+                title: (items) => {
+                  const i = items[0].dataIndex;
+                  const lA = puntosA[i] ? fmtLabel(puntosA[i].label) : '';
+                  const lB = puntosB[i] ? fmtLabel(puntosB[i].label) : '';
+                  return [`📘 A: ${lA}`, `📕 B: ${lB}`];
+                },
+                label: ctx => {
+                  if (ctx.dataset.label === 'Diferencia') return null;
+                  const i = ctx.dataIndex;
+                  const a = valA[i] ?? 0;
+                  const b = valB[i] ?? 0;
+                  const diff = a - b;
+                  const pct = b !== 0 ? ((diff / b) * 100).toFixed(1) : null;
+                  if (ctx.dataset.label.includes('Período A')) {
+                    return ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}${pct !== null ? `  (${diff >= 0 ? '▲' : '▼'}${Math.abs(pct)}%)` : ''}`;
+                  }
+                  return ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`;
+                },
+                afterBody: (items) => {
+                  const i = items[0].dataIndex;
+                  const a = valA[i] ?? 0;
+                  const b = valB[i] ?? 0;
+                  const diff = a - b;
+                  return [``, `Diferencia: ${diff >= 0 ? '+' : ''}${fmt(diff)}`];
+                }
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { maxTicksLimit: 15 } },
+            y: {
+              ticks: { callback: v => '$' + v.toLocaleString('es-SV') },
+              grid: { color: '#f0f0f0' }
+            }
+          }
+        }
+      });
+
+      // Resumen
+      const totalA = valA.reduce((s, v) => s + v, 0);
+      const totalB = valB.reduce((s, v) => s + v, 0);
+      const diff = totalA - totalB;
+      const pct  = totalB !== 0 ? ((diff / totalB) * 100).toFixed(1) : null;
+
+      document.getElementById('tr-total-a').textContent = fmt(totalA);
+      document.getElementById('tr-total-b').textContent = fmt(totalB);
+      document.getElementById('tr-dif').textContent = (diff >= 0 ? '+' : '') + fmt(diff);
+      document.getElementById('tr-pct').textContent = pct !== null ? `${diff >= 0 ? '▲' : '▼'} ${Math.abs(pct)}%` : '—';
+
+      const difCard = document.getElementById('tr-dif-card');
+      const pctCard = document.getElementById('tr-pct-card');
+      difCard.className = `tend-res-card ${diff >= 0 ? 'verde' : 'naranja'}`;
+      pctCard.className = `tend-res-card ${diff >= 0 ? 'verde' : 'naranja'}`;
+
+      document.getElementById('tend-resumen-wrap').style.display = 'block';
+      document.getElementById('tend-chart-card').style.display = 'block';
+      document.getElementById('estado-tendencias').textContent = '';
+    } catch (e) {
+      document.getElementById('estado-tendencias').textContent = 'Error: ' + e.message;
+    } finally {
+      document.getElementById('btn-tendencias').disabled = false;
+    }
+  }
+</script>
+
+<script>
+    const PROXY = 'https://vivapizza-proxy.onrender.com';
   const fmt = n => new Intl.NumberFormat('es-SV', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(n);
   const fmtDate = s => new Date(s + 'T12:00:00').toLocaleDateString('es-SV', { day: 'numeric', month: 'short', year: 'numeric' });
   const toISO = d => d.toISOString().slice(0, 10);
@@ -559,6 +886,8 @@
       btn.disabled = false;
     }
   }
+</script>
+
 </script>
 </body>
 </html>

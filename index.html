@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ventas · Viva Pizza Armenia</title>
+  <title>Ventas · Viva Pizza</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: sans-serif; background: #f5f5f5; display: flex; justify-content: center; padding: 2rem 1rem; min-height: 100vh; }
-    .card { background: #fff; border-radius: 12px; padding: 2rem; width: 100%; max-width: 620px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-    h1 { font-size: 18px; font-weight: 600; margin-bottom: 1.5rem; color: #111; }
+    .container { width: 100%; max-width: 960px; }
+
+    h1 { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 1.5rem; }
+
+    .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 1.25rem; }
+
     .seccion-titulo { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; margin-bottom: 10px; }
     .bloque { border: 1px solid #eee; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
     .bloque.a { border-left: 3px solid #111; }
@@ -18,38 +22,64 @@
     .hint { font-size: 11px; color: #aaa; margin-top: 8px; }
     input[type="date"] { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
     input[type="date"]:focus { border-color: #888; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75rem; }
     .accesos { display: flex; gap: 6px; flex-wrap: wrap; }
     .accesos button { font-size: 12px; padding: 4px 12px; border: 1px solid #ddd; border-radius: 20px; background: #fff; cursor: pointer; color: #333; }
     .accesos button:hover { background: #f0f0f0; }
-    .btn-consultar { width: 100%; padding: 10px; background: #111; color: #fff; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; margin: 1.25rem 0; }
+
+    .btn-consultar { width: 100%; padding: 10px; background: #111; color: #fff; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
     .btn-consultar:hover { background: #333; }
     .btn-consultar:disabled { background: #aaa; cursor: not-allowed; }
-    .resultados { display: none; }
-    .comparacion { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
-    .res-bloque { border-radius: 10px; padding: 1rem 1.25rem; background: #f9f9f9; }
-    .res-bloque .etiqueta { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-    .res-bloque.a .etiqueta { color: #111; }
-    .res-bloque.b .etiqueta { color: #d97706; }
-    .res-bloque .periodo { font-size: 12px; color: #888; margin-bottom: 6px; }
-    .res-bloque .total { font-size: 26px; font-weight: 600; color: #111; }
-    .diferencia { border-radius: 10px; padding: 1rem 1.25rem; background: #f0fdf4; border: 1px solid #bbf7d0; text-align: center; }
+    .estado-global { font-size: 13px; color: #888; margin-top: 0.75rem; min-height: 18px; text-align: center; }
+
+    /* Sucursales en paralelo */
+    .sucursales { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+    @media (max-width: 600px) { .sucursales { grid-template-columns: 1fr; } }
+
+    .sucursal-panel { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-top: 4px solid #ddd; }
+    .sucursal-panel.armenia { border-top-color: #e63312; }
+    .sucursal-panel.izalco  { border-top-color: #f5a623; }
+
+    .sucursal-nombre { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; }
+    .sucursal-panel.armenia .sucursal-nombre { color: #e63312; }
+    .sucursal-panel.izalco  .sucursal-nombre { color: #d97706; }
+
+    .comparacion { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .res-bloque { border-radius: 8px; padding: 0.75rem 1rem; background: #f9f9f9; }
+    .res-bloque .etiqueta { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; margin-bottom: 3px; }
+    .res-bloque .periodo-txt { font-size: 11px; color: #aaa; margin-bottom: 4px; }
+    .res-bloque .total { font-size: 22px; font-weight: 700; color: #111; }
+    .res-bloque .loading { font-size: 13px; color: #ccc; }
+
+    .diferencia { border-radius: 8px; padding: 0.75rem 1rem; background: #f0fdf4; border: 1px solid #bbf7d0; text-align: center; }
     .diferencia.negativa { background: #fef2f2; border-color: #fecaca; }
-    .diferencia .dif-label { font-size: 12px; color: #666; margin-bottom: 4px; }
-    .diferencia .dif-valor { font-size: 22px; font-weight: 600; color: #16a34a; }
+    .diferencia.oculta { display: none; }
+    .dif-label { font-size: 11px; color: #666; margin-bottom: 2px; }
+    .dif-valor { font-size: 18px; font-weight: 700; color: #16a34a; }
     .diferencia.negativa .dif-valor { color: #dc2626; }
-    .diferencia .dif-pct { font-size: 13px; color: #16a34a; margin-top: 2px; }
+    .dif-pct { font-size: 12px; color: #16a34a; margin-top: 2px; }
     .diferencia.negativa .dif-pct { color: #dc2626; }
-    .estado { font-size: 13px; color: #888; margin-top: 0.75rem; min-height: 18px; text-align: center; }
+
+    /* Total combinado */
+    .total-combinado-wrap { display: none; }
+    .total-combinado-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    @media (max-width: 600px) { .total-combinado-grid { grid-template-columns: 1fr; } }
+    .total-card { border-radius: 12px; padding: 1.25rem 1.5rem; }
+    .total-card.per-a { background: #111; color: #fff; }
+    .total-card.per-b { background: #78350f; color: #fff; }
+    .total-card .tc-label { font-size: 12px; color: #aaa; margin-bottom: 4px; }
+    .total-card .tc-valor { font-size: 30px; font-weight: 700; }
+    .total-card .tc-periodo { font-size: 11px; color: #666; margin-top: 4px; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>🍕 Ventas · Viva Pizza Armenia</h1>
+<div class="container">
+  <h1>🍕 Ventas · Viva Pizza</h1>
 
+  <div class="card">
     <div class="bloque a">
       <div class="seccion-titulo">Período A</div>
-      <div class="grid">
+      <div class="grid-2">
         <div><label>Desde</label><input type="date" id="a-from" oninput="sincronizarB()" /></div>
         <div><label>Hasta</label><input type="date" id="a-to" oninput="sincronizarB()" /></div>
       </div>
@@ -63,7 +93,7 @@
 
     <div class="bloque b">
       <div class="seccion-titulo">Período B — mismo rango, año anterior</div>
-      <div class="grid">
+      <div class="grid-2">
         <div><label>Desde</label><input type="date" id="b-from" /></div>
         <div><label>Hasta</label><input type="date" id="b-to" /></div>
       </div>
@@ -71,111 +101,181 @@
     </div>
 
     <button class="btn-consultar" id="btn-consultar" onclick="consultar()">Comparar períodos</button>
+    <div class="estado-global" id="estado-global"></div>
+  </div>
 
-    <div class="resultados" id="resultados">
+  <!-- Sucursales en paralelo -->
+  <div class="sucursales">
+    <!-- Armenia -->
+    <div class="sucursal-panel armenia">
+      <div class="sucursal-nombre">🔴 Armenia</div>
       <div class="comparacion">
-        <div class="res-bloque a">
+        <div class="res-bloque">
           <div class="etiqueta">Período A</div>
-          <div class="periodo" id="a-periodo"></div>
-          <div class="total" id="a-total"></div>
+          <div class="periodo-txt" id="arm-a-periodo"></div>
+          <div class="total loading" id="arm-a-total">—</div>
         </div>
-        <div class="res-bloque b">
+        <div class="res-bloque">
           <div class="etiqueta">Período B</div>
-          <div class="periodo" id="b-periodo"></div>
-          <div class="total" id="b-total"></div>
+          <div class="periodo-txt" id="arm-b-periodo"></div>
+          <div class="total loading" id="arm-b-total">—</div>
         </div>
       </div>
-      <div class="diferencia" id="dif-bloque">
-        <div class="dif-label" id="dif-label"></div>
-        <div class="dif-valor" id="dif-valor"></div>
-        <div class="dif-pct" id="dif-pct"></div>
+      <div class="diferencia oculta" id="arm-dif">
+        <div class="dif-label" id="arm-dif-label"></div>
+        <div class="dif-valor" id="arm-dif-valor"></div>
+        <div class="dif-pct" id="arm-dif-pct"></div>
       </div>
     </div>
 
-    <div class="estado" id="estado"></div>
+    <!-- Izalco -->
+    <div class="sucursal-panel izalco">
+      <div class="sucursal-nombre">🟠 Izalco</div>
+      <div class="comparacion">
+        <div class="res-bloque">
+          <div class="etiqueta">Período A</div>
+          <div class="periodo-txt" id="izl-a-periodo"></div>
+          <div class="total loading" id="izl-a-total">—</div>
+        </div>
+        <div class="res-bloque">
+          <div class="etiqueta">Período B</div>
+          <div class="periodo-txt" id="izl-b-periodo"></div>
+          <div class="total loading" id="izl-b-total">—</div>
+        </div>
+      </div>
+      <div class="diferencia oculta" id="izl-dif">
+        <div class="dif-label" id="izl-dif-label"></div>
+        <div class="dif-valor" id="izl-dif-valor"></div>
+        <div class="dif-pct" id="izl-dif-pct"></div>
+      </div>
+    </div>
   </div>
 
-  <script>
-    const PROXY = 'https://vivapizza-proxy.onrender.com';
-    const fmt = n => new Intl.NumberFormat('es-SV', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(n);
-    const fmtDate = s => new Date(s + 'T12:00:00').toLocaleDateString('es-SV', { day: 'numeric', month: 'short', year: 'numeric' });
-    const toISO = d => d.toISOString().slice(0, 10);
+  <!-- Total combinado -->
+  <div class="total-combinado-wrap" id="total-combinado-wrap">
+    <div class="total-combinado-grid">
+      <div class="total-card per-a">
+        <div class="tc-label">Total combinado · Período A</div>
+        <div class="tc-valor" id="tc-a-valor">—</div>
+        <div class="tc-periodo" id="tc-a-periodo"></div>
+      </div>
+      <div class="total-card per-b">
+        <div class="tc-label">Total combinado · Período B</div>
+        <div class="tc-valor" id="tc-b-valor">—</div>
+        <div class="tc-periodo" id="tc-b-periodo"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
-    function addDays(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return toISO(d); }
-    function restarAnio(iso) { const d = new Date(iso + 'T12:00:00'); d.setFullYear(d.getFullYear() - 1); return toISO(d); }
-    function hoy() { return toISO(new Date()); }
-    function ayer() { const d = new Date(); d.setDate(d.getDate() - 1); return toISO(d); }
-    function inicioSemana() { const d = new Date(); d.setDate(d.getDate() - d.getDay()); return toISO(d); }
-    function inicioMes() { const d = new Date(); d.setDate(1); return toISO(d); }
+<script>
+  const PROXY = 'https://vivapizza-proxy.onrender.com';
+  const fmt = n => new Intl.NumberFormat('es-SV', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(n);
+  const fmtDate = s => new Date(s + 'T12:00:00').toLocaleDateString('es-SV', { day: 'numeric', month: 'short', year: 'numeric' });
+  const toISO = d => d.toISOString().slice(0, 10);
 
-    function sincronizarB() {
-      const aFrom = document.getElementById('a-from').value;
-      const aTo   = document.getElementById('a-to').value;
-      if (aFrom) document.getElementById('b-from').value = restarAnio(aFrom);
-      if (aTo)   document.getElementById('b-to').value   = restarAnio(aTo);
+  function addDays(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return toISO(d); }
+  function restarAnio(iso) { const d = new Date(iso + 'T12:00:00'); d.setFullYear(d.getFullYear() - 1); return toISO(d); }
+  function hoy() { return toISO(new Date()); }
+  function ayer() { const d = new Date(); d.setDate(d.getDate() - 1); return toISO(d); }
+  function inicioSemana() { const d = new Date(); d.setDate(d.getDate() - d.getDay()); return toISO(d); }
+  function inicioMes() { const d = new Date(); d.setDate(1); return toISO(d); }
+
+  function sincronizarB() {
+    const aFrom = document.getElementById('a-from').value;
+    const aTo   = document.getElementById('a-to').value;
+    if (aFrom) document.getElementById('b-from').value = restarAnio(aFrom);
+    if (aTo)   document.getElementById('b-to').value   = restarAnio(aTo);
+  }
+
+  function setRapido(tipo) {
+    const f = document.getElementById('a-from');
+    const t = document.getElementById('a-to');
+    if (tipo === 'hoy')    { f.value = hoy(); t.value = hoy(); }
+    if (tipo === 'ayer')   { f.value = ayer(); t.value = ayer(); }
+    if (tipo === 'semana') { f.value = inicioSemana(); t.value = hoy(); }
+    if (tipo === 'mes')    { f.value = inicioMes(); t.value = hoy(); }
+    sincronizarB();
+  }
+
+  setRapido('ayer');
+
+  async function fetchTotal(sucursal, from, to) {
+    const toApi = addDays(to, 1);
+    const res = await fetch(`${PROXY}/${sucursal}/orden-trabajo/total?from=${from}&to=${toApi}`);
+    if (!res.ok) throw new Error('Error ' + res.status);
+    const data = await res.json();
+    return data.total;
+  }
+
+  function renderDif(prefix, totalA, totalB) {
+    const diff = totalA - totalB;
+    const pct = totalB !== 0 ? ((diff / totalB) * 100).toFixed(1) : null;
+    const el = document.getElementById(`${prefix}-dif`);
+    el.className = 'diferencia' + (diff < 0 ? ' negativa' : '');
+    document.getElementById(`${prefix}-dif-label`).textContent = diff >= 0 ? 'Período A mayor en' : 'Período A menor en';
+    document.getElementById(`${prefix}-dif-valor`).textContent = fmt(Math.abs(diff));
+    document.getElementById(`${prefix}-dif-pct`).textContent = pct !== null ? `${diff >= 0 ? '▲' : '▼'} ${Math.abs(pct)}% vs período B` : '';
+  }
+
+  async function consultar() {
+    const aFrom = document.getElementById('a-from').value;
+    const aTo   = document.getElementById('a-to').value;
+    const bFrom = document.getElementById('b-from').value;
+    const bTo   = document.getElementById('b-to').value;
+
+    if (!aFrom || !aTo || !bFrom || !bTo) { document.getElementById('estado-global').textContent = 'Completa todos los campos de fecha.'; return; }
+    if (aFrom > aTo) { document.getElementById('estado-global').textContent = 'El período A tiene fechas inválidas.'; return; }
+    if (bFrom > bTo) { document.getElementById('estado-global').textContent = 'El período B tiene fechas inválidas.'; return; }
+
+    document.getElementById('estado-global').textContent = 'Consultando...';
+    document.getElementById('btn-consultar').disabled = true;
+    document.getElementById('total-combinado-wrap').style.display = 'none';
+
+    const periodoA = aFrom === aTo ? fmtDate(aFrom) : `${fmtDate(aFrom)} – ${fmtDate(aTo)}`;
+    const periodoB = bFrom === bTo ? fmtDate(bFrom) : `${fmtDate(bFrom)} – ${fmtDate(bTo)}`;
+
+    // Reset
+    ['arm-a-total','arm-b-total','izl-a-total','izl-b-total'].forEach(id => document.getElementById(id).textContent = '...');
+    ['arm-dif','izl-dif'].forEach(id => document.getElementById(id).className = 'diferencia oculta');
+    document.getElementById('arm-a-periodo').textContent = periodoA;
+    document.getElementById('arm-b-periodo').textContent = periodoB;
+    document.getElementById('izl-a-periodo').textContent = periodoA;
+    document.getElementById('izl-b-periodo').textContent = periodoB;
+
+    const [resArmA, resArmB, resIzlA, resIzlB] = await Promise.allSettled([
+      fetchTotal('armenia', aFrom, aTo),
+      fetchTotal('armenia', bFrom, bTo),
+      fetchTotal('izalco',  aFrom, aTo),
+      fetchTotal('izalco',  bFrom, bTo),
+    ]);
+
+    // Armenia
+    const armA = resArmA.status === 'fulfilled' ? resArmA.value : null;
+    const armB = resArmB.status === 'fulfilled' ? resArmB.value : null;
+    document.getElementById('arm-a-total').textContent = armA !== null ? fmt(armA) : '—';
+    document.getElementById('arm-b-total').textContent = armB !== null ? fmt(armB) : '—';
+    if (armA !== null && armB !== null) renderDif('arm', armA, armB);
+
+    // Izalco
+    const izlA = resIzlA.status === 'fulfilled' ? resIzlA.value : null;
+    const izlB = resIzlB.status === 'fulfilled' ? resIzlB.value : null;
+    document.getElementById('izl-a-total').textContent = izlA !== null ? fmt(izlA) : '—';
+    document.getElementById('izl-b-total').textContent = izlB !== null ? fmt(izlB) : '—';
+    if (izlA !== null && izlB !== null) renderDif('izl', izlA, izlB);
+
+    // Total combinado
+    if (armA !== null && izlA !== null && armB !== null && izlB !== null) {
+      document.getElementById('tc-a-valor').textContent = fmt(armA + izlA);
+      document.getElementById('tc-a-periodo').textContent = periodoA;
+      document.getElementById('tc-b-valor').textContent = fmt(armB + izlB);
+      document.getElementById('tc-b-periodo').textContent = periodoB;
+      document.getElementById('total-combinado-wrap').style.display = 'block';
     }
 
-    function setRapido(tipo) {
-      const f = document.getElementById('a-from');
-      const t = document.getElementById('a-to');
-      if (tipo === 'hoy')    { f.value = hoy(); t.value = hoy(); }
-      if (tipo === 'ayer')   { f.value = ayer(); t.value = ayer(); }
-      if (tipo === 'semana') { f.value = inicioSemana(); t.value = hoy(); }
-      if (tipo === 'mes')    { f.value = inicioMes(); t.value = hoy(); }
-      sincronizarB();
-    }
-
-    // Defaults: A = ayer, B = mismo día del año anterior
-    setRapido('ayer');
-
-    async function fetchTotal(from, to) {
-      const toApi = addDays(to, 1);
-      const res = await fetch(`${PROXY}/orden-trabajo/total?from=${from}&to=${toApi}`);
-      if (!res.ok) throw new Error('Error ' + res.status);
-      const data = await res.json();
-      return data.total;
-    }
-
-    async function consultar() {
-      const aFrom = document.getElementById('a-from').value;
-      const aTo   = document.getElementById('a-to').value;
-      const bFrom = document.getElementById('b-from').value;
-      const bTo   = document.getElementById('b-to').value;
-      const estado = document.getElementById('estado');
-      const resultados = document.getElementById('resultados');
-
-      if (!aFrom || !aTo || !bFrom || !bTo) { estado.textContent = 'Completa todos los campos de fecha.'; return; }
-      if (aFrom > aTo) { estado.textContent = 'El período A tiene fechas inválidas.'; return; }
-      if (bFrom > bTo) { estado.textContent = 'El período B tiene fechas inválidas.'; return; }
-
-      estado.textContent = 'Consultando...';
-      resultados.style.display = 'none';
-      document.getElementById('btn-consultar').disabled = true;
-
-      try {
-        const [totalA, totalB] = await Promise.all([fetchTotal(aFrom, aTo), fetchTotal(bFrom, bTo)]);
-
-        document.getElementById('a-periodo').textContent = aFrom === aTo ? fmtDate(aFrom) : `${fmtDate(aFrom)} – ${fmtDate(aTo)}`;
-        document.getElementById('b-periodo').textContent = bFrom === bTo ? fmtDate(bFrom) : `${fmtDate(bFrom)} – ${fmtDate(bTo)}`;
-        document.getElementById('a-total').textContent = fmt(totalA);
-        document.getElementById('b-total').textContent = fmt(totalB);
-
-        const diff = totalA - totalB;
-        const pct = totalB !== 0 ? ((diff / totalB) * 100).toFixed(1) : null;
-        const difBloque = document.getElementById('dif-bloque');
-        difBloque.className = 'diferencia' + (diff < 0 ? ' negativa' : '');
-        document.getElementById('dif-label').textContent = diff >= 0 ? 'Período A mayor que B en' : 'Período A menor que B en';
-        document.getElementById('dif-valor').textContent = fmt(Math.abs(diff));
-        document.getElementById('dif-pct').textContent = pct !== null ? `${diff >= 0 ? '▲' : '▼'} ${Math.abs(pct)}% respecto al período B` : '';
-
-        resultados.style.display = 'block';
-        estado.textContent = '';
-      } catch (e) {
-        estado.textContent = 'No se pudo conectar. Si es la primera consulta del día, espera 1 minuto e intenta de nuevo.';
-      } finally {
-        document.getElementById('btn-consultar').disabled = false;
-      }
-    }
-  </script>
+    document.getElementById('estado-global').textContent = '';
+    document.getElementById('btn-consultar').disabled = false;
+  }
+</script>
 </body>
 </html>

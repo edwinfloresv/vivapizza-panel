@@ -3,16 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ventas · Viva Pizza</title>
+  <title>Panel · Viva Pizza</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: sans-serif; background: #f5f5f5; display: flex; justify-content: center; padding: 2rem 1rem; min-height: 100vh; }
-    .container { width: 100%; max-width: 960px; }
+    body { font-family: sans-serif; background: #f5f5f5; display: flex; min-height: 100vh; }
 
-    h1 { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 1.5rem; }
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 220px; min-height: 100vh; background: #111; display: flex;
+      flex-direction: column; padding: 1.5rem 0; flex-shrink: 0;
+    }
+    .sidebar-logo { color: #fff; font-size: 16px; font-weight: 700; padding: 0 1.25rem 1.5rem; border-bottom: 1px solid #222; }
+    .sidebar-logo span { color: #f59e0b; }
+    .sidebar-menu { margin-top: 1rem; }
+    .menu-item {
+      display: flex; align-items: center; gap: 10px; padding: 0.75rem 1.25rem;
+      color: #888; font-size: 14px; cursor: pointer; transition: all 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .menu-item:hover { color: #fff; background: #1a1a1a; }
+    .menu-item.active { color: #fff; background: #1a1a1a; border-left-color: #f59e0b; }
+    .menu-item .icon { font-size: 18px; width: 22px; text-align: center; }
+
+    /* ── Main ── */
+    .main { flex: 1; padding: 2rem 1.5rem; overflow-x: hidden; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    h2 { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 1.25rem; }
 
     .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 1.25rem; }
 
+    /* ── Comparador (panel 1) ── */
     .seccion-titulo { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; margin-bottom: 10px; }
     .bloque { border: 1px solid #eee; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
     .bloque.a { border-left: 3px solid #111; }
@@ -20,26 +43,32 @@
     .bloque.b input[type="date"] { background: #fefce8; color: #92400e; }
     label { font-size: 13px; color: #666; display: block; margin-bottom: 6px; }
     .hint { font-size: 11px; color: #aaa; margin-top: 8px; }
-    input[type="date"] { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
-    input[type="date"]:focus { border-color: #888; }
+    input[type="date"], select {
+      width: 100%; padding: 8px 10px; border: 1px solid #ddd;
+      border-radius: 8px; font-size: 14px; outline: none; background: #fff;
+    }
+    input[type="date"]:focus, select:focus { border-color: #888; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
     .accesos { display: flex; gap: 6px; flex-wrap: wrap; }
-    .accesos button { font-size: 12px; padding: 4px 12px; border: 1px solid #ddd; border-radius: 20px; background: #fff; cursor: pointer; color: #333; }
-    .accesos button:hover { background: #f0f0f0; }
+    .accesos button, .accesos-g button {
+      font-size: 12px; padding: 4px 12px; border: 1px solid #ddd;
+      border-radius: 20px; background: #fff; cursor: pointer; color: #333;
+    }
+    .accesos button:hover, .accesos-g button:hover { background: #f0f0f0; }
+    .accesos-g button.active { background: #111; color: #fff; border-color: #111; }
 
-    .btn-consultar { width: 100%; padding: 10px; background: #111; color: #fff; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
-    .btn-consultar:hover { background: #333; }
-    .btn-consultar:disabled { background: #aaa; cursor: not-allowed; }
-    .estado-global { font-size: 13px; color: #888; margin-top: 0.75rem; min-height: 18px; text-align: center; }
+    .btn { width: 100%; padding: 10px; background: #111; color: #fff; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
+    .btn:hover { background: #333; }
+    .btn:disabled { background: #aaa; cursor: not-allowed; }
+    .estado-txt { font-size: 13px; color: #888; margin-top: 0.75rem; min-height: 18px; text-align: center; }
 
-    /* Sucursales en paralelo */
     .sucursales { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
-    @media (max-width: 600px) { .sucursales { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) { .sucursales { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } }
 
     .sucursal-panel { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-top: 4px solid #ddd; }
     .sucursal-panel.armenia { border-top-color: #e63312; }
     .sucursal-panel.izalco  { border-top-color: #f5a623; }
-
     .sucursal-nombre { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; }
     .sucursal-panel.armenia .sucursal-nombre { color: #e63312; }
     .sucursal-panel.izalco  .sucursal-nombre { color: #d97706; }
@@ -57,7 +86,6 @@
     .res-bloque .total { font-size: 22px; font-weight: 700; color: #111; }
     .res-bloque.per-a .total { color: #0c4a6e; }
     .res-bloque.per-b .total { color: #78350f; }
-    .res-bloque .loading { font-size: 13px; color: #ccc; }
 
     .diferencia { border-radius: 8px; padding: 0.75rem 1rem; background: #f0fdf4; border: 1px solid #bbf7d0; text-align: center; }
     .diferencia.negativa { background: #fef2f2; border-color: #fecaca; }
@@ -68,7 +96,6 @@
     .dif-pct { font-size: 12px; color: #16a34a; margin-top: 2px; }
     .diferencia.negativa .dif-pct { color: #dc2626; }
 
-    /* Total combinado */
     .total-combinado-wrap { display: none; }
     .total-combinado-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
     @media (max-width: 600px) { .total-combinado-grid { grid-template-columns: 1fr; } }
@@ -78,103 +105,200 @@
     .total-card .tc-label { font-size: 12px; color: #aaa; margin-bottom: 4px; }
     .total-card .tc-valor { font-size: 30px; font-weight: 700; }
     .total-card .tc-periodo { font-size: 11px; color: #666; margin-top: 4px; }
+
+    /* ── Gráficas (panel 2) ── */
+    .controles-grafica { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-bottom: 1.25rem; }
+    .ctrl-group { display: flex; flex-direction: column; gap: 4px; }
+    .ctrl-group label { font-size: 12px; color: #666; }
+    .ctrl-group select, .ctrl-group input[type="date"], .ctrl-group input[type="number"] {
+      width: auto; min-width: 140px; padding: 7px 10px;
+    }
+
+    .agrupacion-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .agrupacion-btns button {
+      font-size: 13px; padding: 6px 16px; border: 1px solid #ddd;
+      border-radius: 20px; background: #fff; cursor: pointer; color: #333;
+    }
+    .agrupacion-btns button.active { background: #111; color: #fff; border-color: #111; }
+
+    .chart-container { position: relative; height: 340px; margin-bottom: 1.25rem; }
+
+    .resumen-graficas { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+    .res-mini { background: #fff; border-radius: 10px; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); text-align: center; }
+    .res-mini .rm-label { font-size: 11px; color: #888; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .res-mini .rm-valor { font-size: 22px; font-weight: 700; color: #111; }
+    .res-mini.armenia .rm-valor { color: #e63312; }
+    .res-mini.izalco  .rm-valor { color: #d97706; }
+    .res-mini.combinado .rm-valor { color: #111; }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>🍕 Ventas · Viva Pizza</h1>
 
-  <div class="card">
-    <div class="bloque a">
-      <div class="seccion-titulo">Período A</div>
-      <div class="grid-2">
-        <div><label>Desde</label><input type="date" id="a-from" oninput="sincronizarB()" /></div>
-        <div><label>Hasta</label><input type="date" id="a-to" oninput="sincronizarB()" /></div>
-      </div>
-      <div class="accesos">
-        <button onclick="setRapido('hoy')">Hoy</button>
-        <button onclick="setRapido('ayer')">Ayer</button>
-        <button onclick="setRapido('semana')">Esta semana</button>
-        <button onclick="setRapido('mes')">Este mes</button>
-      </div>
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">🍕 Viva <span>Pizza</span></div>
+  <div class="sidebar-menu">
+    <div class="menu-item active" onclick="showPanel('comparador')">
+      <span class="icon">⚖️</span> Comparador
     </div>
-
-    <div class="bloque b">
-      <div class="seccion-titulo">Período B — mismo rango, año anterior</div>
-      <div class="grid-2">
-        <div><label>Desde</label><input type="date" id="b-from" /></div>
-        <div><label>Hasta</label><input type="date" id="b-to" /></div>
-      </div>
-      <p class="hint">Se actualiza automáticamente al cambiar el período A. También puedes editarlo manualmente.</p>
-    </div>
-
-    <button class="btn-consultar" id="btn-consultar" onclick="consultar()">Comparar períodos</button>
-    <div class="estado-global" id="estado-global"></div>
-  </div>
-
-  <!-- Sucursales en paralelo -->
-  <div class="sucursales">
-    <!-- Armenia -->
-    <div class="sucursal-panel armenia">
-      <div class="sucursal-nombre">🔴 Armenia</div>
-      <div class="comparacion">
-        <div class="res-bloque per-a">
-          <div class="etiqueta">Período A</div>
-          <div class="periodo-txt" id="arm-a-periodo"></div>
-          <div class="total loading" id="arm-a-total">—</div>
-        </div>
-        <div class="res-bloque per-b">
-          <div class="etiqueta">Período B</div>
-          <div class="periodo-txt" id="arm-b-periodo"></div>
-          <div class="total loading" id="arm-b-total">—</div>
-        </div>
-      </div>
-      <div class="diferencia oculta" id="arm-dif">
-        <div class="dif-label" id="arm-dif-label"></div>
-        <div class="dif-valor" id="arm-dif-valor"></div>
-        <div class="dif-pct" id="arm-dif-pct"></div>
-      </div>
-    </div>
-
-    <!-- Izalco -->
-    <div class="sucursal-panel izalco">
-      <div class="sucursal-nombre">🟠 Izalco</div>
-      <div class="comparacion">
-        <div class="res-bloque per-a">
-          <div class="etiqueta">Período A</div>
-          <div class="periodo-txt" id="izl-a-periodo"></div>
-          <div class="total loading" id="izl-a-total">—</div>
-        </div>
-        <div class="res-bloque per-b">
-          <div class="etiqueta">Período B</div>
-          <div class="periodo-txt" id="izl-b-periodo"></div>
-          <div class="total loading" id="izl-b-total">—</div>
-        </div>
-      </div>
-      <div class="diferencia oculta" id="izl-dif">
-        <div class="dif-label" id="izl-dif-label"></div>
-        <div class="dif-valor" id="izl-dif-valor"></div>
-        <div class="dif-pct" id="izl-dif-pct"></div>
-      </div>
+    <div class="menu-item" onclick="showPanel('graficas')">
+      <span class="icon">📊</span> Gráficas
     </div>
   </div>
+</nav>
 
-  <!-- Total combinado -->
-  <div class="total-combinado-wrap" id="total-combinado-wrap">
-    <div class="total-combinado-grid">
-      <div class="total-card per-a">
-        <div class="tc-label">Total combinado · Período A</div>
-        <div class="tc-valor" id="tc-a-valor">—</div>
-        <div class="tc-periodo" id="tc-a-periodo"></div>
+<!-- Main -->
+<main class="main">
+
+  <!-- ══ PANEL 1: Comparador ══ -->
+  <div class="panel active" id="panel-comparador">
+    <h2>Comparador de períodos</h2>
+
+    <div class="card">
+      <div class="bloque a">
+        <div class="seccion-titulo">Período A</div>
+        <div class="grid-2">
+          <div><label>Desde</label><input type="date" id="a-from" oninput="sincronizarB()" /></div>
+          <div><label>Hasta</label><input type="date" id="a-to" oninput="sincronizarB()" /></div>
+        </div>
+        <div class="accesos">
+          <button onclick="setRapido('hoy')">Hoy</button>
+          <button onclick="setRapido('ayer')">Ayer</button>
+          <button onclick="setRapido('semana')">Esta semana</button>
+          <button onclick="setRapido('mes')">Este mes</button>
+        </div>
       </div>
-      <div class="total-card per-b">
-        <div class="tc-label">Total combinado · Período B</div>
-        <div class="tc-valor" id="tc-b-valor">—</div>
-        <div class="tc-periodo" id="tc-b-periodo"></div>
+      <div class="bloque b">
+        <div class="seccion-titulo">Período B — mismo rango, año anterior</div>
+        <div class="grid-2">
+          <div><label>Desde</label><input type="date" id="b-from" /></div>
+          <div><label>Hasta</label><input type="date" id="b-to" /></div>
+        </div>
+        <p class="hint">Se actualiza automáticamente al cambiar el período A. También puedes editarlo manualmente.</p>
+      </div>
+      <button class="btn" id="btn-comparar" onclick="consultar()">Comparar períodos</button>
+      <div class="estado-txt" id="estado-comparador"></div>
+    </div>
+
+    <div class="sucursales">
+      <div class="sucursal-panel armenia">
+        <div class="sucursal-nombre">🔴 Armenia</div>
+        <div class="comparacion">
+          <div class="res-bloque per-a">
+            <div class="etiqueta">Período A</div>
+            <div class="periodo-txt" id="arm-a-periodo"></div>
+            <div class="total" id="arm-a-total">—</div>
+          </div>
+          <div class="res-bloque per-b">
+            <div class="etiqueta">Período B</div>
+            <div class="periodo-txt" id="arm-b-periodo"></div>
+            <div class="total" id="arm-b-total">—</div>
+          </div>
+        </div>
+        <div class="diferencia oculta" id="arm-dif">
+          <div class="dif-label" id="arm-dif-label"></div>
+          <div class="dif-valor" id="arm-dif-valor"></div>
+          <div class="dif-pct" id="arm-dif-pct"></div>
+        </div>
+      </div>
+      <div class="sucursal-panel izalco">
+        <div class="sucursal-nombre">🟠 Izalco</div>
+        <div class="comparacion">
+          <div class="res-bloque per-a">
+            <div class="etiqueta">Período A</div>
+            <div class="periodo-txt" id="izl-a-periodo"></div>
+            <div class="total" id="izl-a-total">—</div>
+          </div>
+          <div class="res-bloque per-b">
+            <div class="etiqueta">Período B</div>
+            <div class="periodo-txt" id="izl-b-periodo"></div>
+            <div class="total" id="izl-b-total">—</div>
+          </div>
+        </div>
+        <div class="diferencia oculta" id="izl-dif">
+          <div class="dif-label" id="izl-dif-label"></div>
+          <div class="dif-valor" id="izl-dif-valor"></div>
+          <div class="dif-pct" id="izl-dif-pct"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="total-combinado-wrap" id="total-combinado-wrap">
+      <div class="total-combinado-grid">
+        <div class="total-card per-a">
+          <div class="tc-label">Total combinado · Período A</div>
+          <div class="tc-valor" id="tc-a-valor">—</div>
+          <div class="tc-periodo" id="tc-a-periodo"></div>
+        </div>
+        <div class="total-card per-b">
+          <div class="tc-label">Total combinado · Período B</div>
+          <div class="tc-valor" id="tc-b-valor">—</div>
+          <div class="tc-periodo" id="tc-b-periodo"></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- ══ PANEL 2: Gráficas ══ -->
+  <div class="panel" id="panel-graficas">
+    <h2>Gráficas de ventas</h2>
+
+    <div class="card">
+      <!-- Agrupación -->
+      <div style="margin-bottom:1rem;">
+        <div class="seccion-titulo" style="margin-bottom:8px;">Agrupación</div>
+        <div class="agrupacion-btns">
+          <button class="active" onclick="setAgrupacion('diario', this)">Diario</button>
+          <button onclick="setAgrupacion('semanal', this)">Semanal</button>
+          <button onclick="setAgrupacion('mensual', this)">Mensual</button>
+          <button onclick="setAgrupacion('anual', this)">Anual</button>
+        </div>
+      </div>
+
+      <!-- Controles dinámicos -->
+      <div id="controles-fecha" class="grid-2" style="margin-bottom:1rem;">
+        <div><label>Desde</label><input type="date" id="g-from" /></div>
+        <div><label>Hasta</label><input type="date" id="g-to" /></div>
+      </div>
+      <div id="controles-anio" style="display:none; margin-bottom:1rem;">
+        <label>Año</label>
+        <input type="number" id="g-year" min="2020" max="2030" style="width:120px; padding:7px 10px; border:1px solid #ddd; border-radius:8px; font-size:14px;" />
+      </div>
+      <div id="controles-anual-rango" style="display:none; margin-bottom:1rem;">
+        <div class="grid-2">
+          <div><label>Año inicio</label><input type="number" id="g-year-from" min="2020" max="2030" style="width:100%; padding:7px 10px; border:1px solid #ddd; border-radius:8px; font-size:14px;" /></div>
+          <div><label>Año fin</label><input type="number" id="g-year-to" min="2020" max="2030" style="width:100%; padding:7px 10px; border:1px solid #ddd; border-radius:8px; font-size:14px;" /></div>
+        </div>
+      </div>
+
+      <!-- Sucursales -->
+      <div style="margin-bottom:1rem;">
+        <div class="seccion-titulo" style="margin-bottom:8px;">Sucursales</div>
+        <div class="agrupacion-btns">
+          <button class="active" id="btn-suc-armenia" onclick="toggleSucursal('armenia', this)">🔴 Armenia</button>
+          <button class="active" id="btn-suc-izalco" onclick="toggleSucursal('izalco', this)">🟠 Izalco</button>
+          <button class="active" id="btn-suc-combinado" onclick="toggleSucursal('combinado', this)">⚫ Combinado</button>
+        </div>
+      </div>
+
+      <button class="btn" id="btn-graficar" onclick="graficar()">Generar gráfica</button>
+      <div class="estado-txt" id="estado-graficas"></div>
+    </div>
+
+    <!-- Gráfica -->
+    <div class="card" id="chart-card" style="display:none;">
+      <div class="chart-container">
+        <canvas id="miGrafica"></canvas>
+      </div>
+    </div>
+
+    <!-- Resumen -->
+    <div id="resumen-graficas" style="display:none;">
+      <div class="resumen-graficas" id="resumen-grid"></div>
+    </div>
+  </div>
+
+</main>
 
 <script>
   const PROXY = 'https://vivapizza-proxy.onrender.com';
@@ -182,6 +306,15 @@
   const fmtDate = s => new Date(s + 'T12:00:00').toLocaleDateString('es-SV', { day: 'numeric', month: 'short', year: 'numeric' });
   const toISO = d => d.toISOString().slice(0, 10);
 
+  // ── Navegación ─────────────────────────────────────────────────────────
+  function showPanel(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  // ── Comparador ─────────────────────────────────────────────────────────
   function addDays(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return toISO(d); }
   function restarAnio(iso) { const d = new Date(iso + 'T12:00:00'); d.setFullYear(d.getFullYear() - 1); return toISO(d); }
   function hoy() { return toISO(new Date()); }
@@ -212,8 +345,7 @@
     const toApi = addDays(to, 1);
     const res = await fetch(`${PROXY}/${sucursal}/orden-trabajo/total?from=${from}&to=${toApi}`);
     if (!res.ok) throw new Error('Error ' + res.status);
-    const data = await res.json();
-    return data.total;
+    return (await res.json()).total;
   }
 
   function renderDif(prefix, totalA, totalB) {
@@ -232,18 +364,15 @@
     const bFrom = document.getElementById('b-from').value;
     const bTo   = document.getElementById('b-to').value;
 
-    if (!aFrom || !aTo || !bFrom || !bTo) { document.getElementById('estado-global').textContent = 'Completa todos los campos de fecha.'; return; }
-    if (aFrom > aTo) { document.getElementById('estado-global').textContent = 'El período A tiene fechas inválidas.'; return; }
-    if (bFrom > bTo) { document.getElementById('estado-global').textContent = 'El período B tiene fechas inválidas.'; return; }
+    if (!aFrom || !aTo || !bFrom || !bTo) { document.getElementById('estado-comparador').textContent = 'Completa todos los campos de fecha.'; return; }
 
-    document.getElementById('estado-global').textContent = 'Consultando...';
-    document.getElementById('btn-consultar').disabled = true;
+    document.getElementById('estado-comparador').textContent = 'Consultando...';
+    document.getElementById('btn-comparar').disabled = true;
     document.getElementById('total-combinado-wrap').style.display = 'none';
 
     const periodoA = aFrom === aTo ? fmtDate(aFrom) : `${fmtDate(aFrom)} – ${fmtDate(aTo)}`;
     const periodoB = bFrom === bTo ? fmtDate(bFrom) : `${fmtDate(bFrom)} – ${fmtDate(bTo)}`;
 
-    // Reset
     ['arm-a-total','arm-b-total','izl-a-total','izl-b-total'].forEach(id => document.getElementById(id).textContent = '...');
     ['arm-dif','izl-dif'].forEach(id => document.getElementById(id).className = 'diferencia oculta');
     document.getElementById('arm-a-periodo').textContent = periodoA;
@@ -258,21 +387,18 @@
       fetchTotal('izalco',  bFrom, bTo),
     ]);
 
-    // Armenia
     const armA = resArmA.status === 'fulfilled' ? resArmA.value : null;
     const armB = resArmB.status === 'fulfilled' ? resArmB.value : null;
     document.getElementById('arm-a-total').textContent = armA !== null ? fmt(armA) : '—';
     document.getElementById('arm-b-total').textContent = armB !== null ? fmt(armB) : '—';
     if (armA !== null && armB !== null) renderDif('arm', armA, armB);
 
-    // Izalco
     const izlA = resIzlA.status === 'fulfilled' ? resIzlA.value : null;
     const izlB = resIzlB.status === 'fulfilled' ? resIzlB.value : null;
     document.getElementById('izl-a-total').textContent = izlA !== null ? fmt(izlA) : '—';
     document.getElementById('izl-b-total').textContent = izlB !== null ? fmt(izlB) : '—';
     if (izlA !== null && izlB !== null) renderDif('izl', izlA, izlB);
 
-    // Total combinado
     if (armA !== null && izlA !== null && armB !== null && izlB !== null) {
       document.getElementById('tc-a-valor').textContent = fmt(armA + izlA);
       document.getElementById('tc-a-periodo').textContent = periodoA;
@@ -281,8 +407,157 @@
       document.getElementById('total-combinado-wrap').style.display = 'block';
     }
 
-    document.getElementById('estado-global').textContent = '';
-    document.getElementById('btn-consultar').disabled = false;
+    document.getElementById('estado-comparador').textContent = '';
+    document.getElementById('btn-comparar').disabled = false;
+  }
+
+  // ── Gráficas ───────────────────────────────────────────────────────────
+  let agrupacion = 'diario';
+  let sucursalesActivas = { armenia: true, izalco: true, combinado: true };
+  let miChart = null;
+
+  // Defaults panel gráficas
+  document.getElementById('g-from').value = inicioMes();
+  document.getElementById('g-to').value   = hoy();
+  document.getElementById('g-year').value = new Date().getFullYear();
+  document.getElementById('g-year-from').value = new Date().getFullYear() - 2;
+  document.getElementById('g-year-to').value   = new Date().getFullYear();
+
+  function setAgrupacion(tipo, btn) {
+    agrupacion = tipo;
+    document.querySelectorAll('.agrupacion-btns button').forEach(b => {
+      if (b.closest('#panel-graficas') && !b.id.startsWith('btn-suc')) b.classList.remove('active');
+    });
+    btn.classList.add('active');
+
+    document.getElementById('controles-fecha').style.display    = (tipo === 'diario' || tipo === 'semanal') ? 'grid' : 'none';
+    document.getElementById('controles-anio').style.display     = tipo === 'mensual' ? 'block' : 'none';
+    document.getElementById('controles-anual-rango').style.display = tipo === 'anual' ? 'block' : 'none';
+  }
+
+  function toggleSucursal(suc, btn) {
+    sucursalesActivas[suc] = !sucursalesActivas[suc];
+    btn.classList.toggle('active', sucursalesActivas[suc]);
+  }
+
+  async function fetchVentas(sucursal) {
+    let url = `${PROXY}/${sucursal}/ventas?agrupacion=${agrupacion}`;
+    if (agrupacion === 'diario' || agrupacion === 'semanal') {
+      url += `&from=${document.getElementById('g-from').value}&to=${document.getElementById('g-to').value}`;
+    } else if (agrupacion === 'mensual') {
+      url += `&year=${document.getElementById('g-year').value}`;
+    } else if (agrupacion === 'anual') {
+      url += `&from=${document.getElementById('g-year-from').value}-01-01&to=${document.getElementById('g-year-to').value}-12-31`;
+    }
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Error ' + res.status);
+    return (await res.json()).puntos;
+  }
+
+  function fmtLabel(label) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(label)) return fmtDate(label);
+    if (/^\d{4}-\d{2}$/.test(label)) {
+      const [y, m] = label.split('-');
+      return new Date(y, m - 1, 1).toLocaleDateString('es-SV', { month: 'short', year: 'numeric' });
+    }
+    return label;
+  }
+
+  async function graficar() {
+    const estado = document.getElementById('estado-graficas');
+    const btn = document.getElementById('btn-graficar');
+    estado.textContent = 'Consultando datos...';
+    btn.disabled = true;
+
+    try {
+      const peticiones = [];
+      if (sucursalesActivas.armenia || sucursalesActivas.combinado) peticiones.push(fetchVentas('armenia'));
+      else peticiones.push(Promise.resolve(null));
+      if (sucursalesActivas.izalco || sucursalesActivas.combinado) peticiones.push(fetchVentas('izalco'));
+      else peticiones.push(Promise.resolve(null));
+
+      const [puntosArm, puntosIzl] = await Promise.all(peticiones);
+
+      // Labels unificados
+      const labels = (puntosArm || puntosIzl).map(p => fmtLabel(p.label));
+      const datasets = [];
+
+      if (sucursalesActivas.armenia && puntosArm) {
+        datasets.push({
+          type: 'bar', label: '🔴 Armenia',
+          data: puntosArm.map(p => p.total),
+          backgroundColor: 'rgba(230,51,18,0.7)', borderColor: '#e63312',
+          borderWidth: 1, borderRadius: 4, order: 2,
+        });
+      }
+      if (sucursalesActivas.izalco && puntosIzl) {
+        datasets.push({
+          type: 'bar', label: '🟠 Izalco',
+          data: puntosIzl.map(p => p.total),
+          backgroundColor: 'rgba(245,166,35,0.7)', borderColor: '#f5a623',
+          borderWidth: 1, borderRadius: 4, order: 2,
+        });
+      }
+      if (sucursalesActivas.combinado && puntosArm && puntosIzl) {
+        const combinado = puntosArm.map((p, i) => p.total + (puntosIzl[i]?.total ?? 0));
+        datasets.push({
+          type: 'line', label: '⚫ Combinado',
+          data: combinado,
+          borderColor: '#111', backgroundColor: 'rgba(0,0,0,0.05)',
+          borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#111',
+          tension: 0.3, fill: false, order: 1,
+        });
+      }
+
+      // Destruir chart anterior
+      if (miChart) miChart.destroy();
+
+      const ctx = document.getElementById('miGrafica').getContext('2d');
+      miChart = new Chart(ctx, {
+        data: { labels, datasets },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { position: 'top' },
+            tooltip: {
+              callbacks: {
+                label: ctx => ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false } },
+            y: {
+              ticks: { callback: v => '$' + v.toLocaleString('es-SV') },
+              grid: { color: '#f0f0f0' }
+            }
+          }
+        }
+      });
+
+      document.getElementById('chart-card').style.display = 'block';
+
+      // Resumen
+      const grid = document.getElementById('resumen-grid');
+      grid.innerHTML = '';
+      const totalArm = puntosArm ? puntosArm.reduce((s, p) => s + p.total, 0) : null;
+      const totalIzl = puntosIzl ? puntosIzl.reduce((s, p) => s + p.total, 0) : null;
+
+      if (sucursalesActivas.armenia && totalArm !== null)
+        grid.innerHTML += `<div class="res-mini armenia"><div class="rm-label">🔴 Armenia</div><div class="rm-valor">${fmt(totalArm)}</div></div>`;
+      if (sucursalesActivas.izalco && totalIzl !== null)
+        grid.innerHTML += `<div class="res-mini izalco"><div class="rm-label">🟠 Izalco</div><div class="rm-valor">${fmt(totalIzl)}</div></div>`;
+      if (sucursalesActivas.combinado && totalArm !== null && totalIzl !== null)
+        grid.innerHTML += `<div class="res-mini combinado"><div class="rm-label">⚫ Combinado</div><div class="rm-valor">${fmt(totalArm + totalIzl)}</div></div>`;
+
+      document.getElementById('resumen-graficas').style.display = 'block';
+      estado.textContent = '';
+    } catch (e) {
+      estado.textContent = 'Error al consultar. ' + e.message;
+    } finally {
+      btn.disabled = false;
+    }
   }
 </script>
 </body>

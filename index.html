@@ -24,7 +24,6 @@
     .panel { display: none; }
     .panel.active { display: block; }
     h2 { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 1.25rem; }
-
     .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 1.25rem; }
 
     /* Shared */
@@ -35,8 +34,8 @@
     .bloque.b input[type="date"] { background: #fefce8; color: #92400e; }
     label { font-size: 13px; color: #666; display: block; margin-bottom: 6px; }
     .hint { font-size: 11px; color: #aaa; margin-top: 8px; }
-    input[type="date"], select { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
-    input[type="date"]:focus, select:focus { border-color: #888; }
+    input[type="date"] { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
+    input[type="date"]:focus { border-color: #888; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75rem; }
     .accesos { display: flex; gap: 6px; flex-wrap: wrap; }
     .accesos button { font-size: 12px; padding: 4px 12px; border: 1px solid #ddd; border-radius: 20px; background: #fff; cursor: pointer; color: #333; }
@@ -59,16 +58,16 @@
     .sucursal-panel.armenia .sucursal-nombre { color: #e63312; }
     .sucursal-panel.izalco  .sucursal-nombre { color: #d97706; }
     .comparacion { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-    .res-bloque { border-radius: 8px; padding: 0.75rem 1rem; background: #f9f9f9; }
+    .res-bloque { border-radius: 8px; padding: 0.75rem 1rem; }
     .res-bloque.per-a { background: #f0f9ff; border: 1px solid #bae6fd; }
     .res-bloque.per-b { background: #fefce8; border: 1px solid #fde68a; }
-    .res-bloque .etiqueta { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #888; margin-bottom: 3px; }
+    .res-bloque .etiqueta { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
     .res-bloque.per-a .etiqueta { color: #0369a1; }
     .res-bloque.per-b .etiqueta { color: #92400e; }
-    .res-bloque .periodo-txt { font-size: 11px; color: #aaa; margin-bottom: 4px; }
+    .res-bloque .periodo-txt { font-size: 11px; margin-bottom: 4px; }
     .res-bloque.per-a .periodo-txt { color: #0284c7; }
     .res-bloque.per-b .periodo-txt { color: #a16207; }
-    .res-bloque .total { font-size: 22px; font-weight: 700; color: #111; }
+    .res-bloque .total { font-size: 22px; font-weight: 700; }
     .res-bloque.per-a .total { color: #0c4a6e; }
     .res-bloque.per-b .total { color: #78350f; }
     .diferencia { border-radius: 8px; padding: 0.75rem 1rem; background: #f0fdf4; border: 1px solid #bbf7d0; text-align: center; }
@@ -96,39 +95,6 @@
     .res-mini .rm-valor { font-size: 22px; font-weight: 700; color: #111; }
     .res-mini.armenia .rm-valor { color: #e63312; }
     .res-mini.izalco  .rm-valor { color: #d97706; }
-
-    /* Tendencias */
-    .tend-sucursales { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
-    @media (max-width: 700px) { .tend-sucursales { grid-template-columns: 1fr; } }
-    .tend-suc-panel { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-top: 4px solid #ddd; }
-    .tend-suc-panel.armenia { border-top-color: #e63312; }
-    .tend-suc-panel.izalco  { border-top-color: #f5a623; }
-    .tend-suc-panel.combinado { border-top-color: #111; }
-    .tend-suc-nombre { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem; }
-    .tend-suc-panel.armenia .tend-suc-nombre { color: #e63312; }
-    .tend-suc-panel.izalco  .tend-suc-nombre { color: #d97706; }
-    .tend-suc-panel.combinado .tend-suc-nombre { color: #111; }
-    .tend-chart-wrap { position: relative; height: 200px; }
-    .tend-resumen-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-    .trm { border-radius: 8px; padding: 0.6rem 0.75rem; text-align: center; }
-    .trm.azul   { background: #eff6ff; border: 1px solid #bfdbfe; }
-    .trm.ambar  { background: #fefce8; border: 1px solid #fde68a; }
-    .trm.verde  { background: #f0fdf4; border: 1px solid #bbf7d0; }
-    .trm.rojo   { background: #fef2f2; border: 1px solid #fecaca; }
-    .trm .trm-label { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
-    .trm .trm-valor { font-size: 15px; font-weight: 700; }
-    .trm.azul  .trm-valor { color: #1d4ed8; }
-    .trm.ambar .trm-valor { color: #92400e; }
-    .trm.verde .trm-valor { color: #16a34a; }
-    .trm.rojo  .trm-valor { color: #dc2626; }
-    .tend-total-wrap { display: none; }
-    .tend-total-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
-    .tend-total-card { border-radius: 12px; padding: 1.25rem 1.5rem; }
-    .tend-total-card.per-a { background: #111; color: #fff; }
-    .tend-total-card.per-b { background: #78350f; color: #fff; }
-    .tend-total-card .ttc-label { font-size: 12px; color: #aaa; margin-bottom: 4px; }
-    .tend-total-card .ttc-valor { font-size: 28px; font-weight: 700; }
-    .tend-total-card .ttc-periodo { font-size: 11px; color: #666; margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -141,9 +107,6 @@
     </div>
     <div class="menu-item" onclick="showPanel('graficas', this)">
       <span class="icon">📊</span> Gráficas
-    </div>
-    <div class="menu-item" onclick="showPanel('tendencias', this)">
-      <span class="icon">📈</span> Tendencias
     </div>
   </div>
 </nav>
@@ -252,93 +215,6 @@
     </div>
   </div>
 
-  <!-- PANEL 3: Tendencias -->
-  <div class="panel" id="panel-tendencias">
-    <h2>Tendencias · Comparar períodos</h2>
-
-    <div class="card">
-      <div class="bloque a" style="border-left-color:#2563eb;">
-        <div class="seccion-titulo" style="color:#2563eb;">📘 Período A</div>
-        <div class="grid-2">
-          <div><label>Desde</label><input type="date" id="t-a-from" style="background:#eff6ff;" oninput="sincronizarTB()" /></div>
-          <div><label>Hasta</label><input type="date" id="t-a-to" style="background:#eff6ff;" oninput="sincronizarTB()" /></div>
-        </div>
-        <div class="accesos">
-          <button onclick="setTRapido('a','hoy')">Hoy</button>
-          <button onclick="setTRapido('a','ayer')">Ayer</button>
-          <button onclick="setTRapido('a','semana')">Esta semana</button>
-          <button onclick="setTRapido('a','mes')">Este mes</button>
-        </div>
-      </div>
-      <div class="bloque b" style="border-left-color:#dc2626;">
-        <div class="seccion-titulo" style="color:#dc2626;">📕 Período B — mismo rango, año anterior</div>
-        <div class="grid-2">
-          <div><label>Desde</label><input type="date" id="t-b-from" style="background:#fff1f2;" /></div>
-          <div><label>Hasta</label><input type="date" id="t-b-to" style="background:#fff1f2;" /></div>
-        </div>
-        <p class="hint">Se actualiza automáticamente al cambiar el período A. También puedes editarlo manualmente.</p>
-      </div>
-      <div style="margin-bottom:1rem;">
-        <div class="seccion-titulo" style="margin-bottom:8px;">Agrupación</div>
-        <div class="agrupacion-btns" id="t-agrup-btns">
-          <button class="active" onclick="setTAgrup('diario', this)">Diario</button>
-          <button onclick="setTAgrup('semanal', this)">Semanal</button>
-          <button onclick="setTAgrup('mensual', this)">Mensual</button>
-        </div>
-      </div>
-      <button class="btn" id="btn-tendencias" onclick="graficarTendencias()">Ver tendencias</button>
-      <div class="estado-txt" id="estado-tendencias"></div>
-    </div>
-
-    <!-- Totales combinados -->
-    <div class="tend-total-wrap" id="tend-total-wrap">
-      <div class="tend-total-grid">
-        <div class="tend-total-card per-a"><div class="ttc-label">Total combinado · Período A</div><div class="ttc-valor" id="ttc-a-valor">—</div><div class="ttc-periodo" id="ttc-a-periodo"></div></div>
-        <div class="tend-total-card per-b"><div class="ttc-label">Total combinado · Período B</div><div class="ttc-valor" id="ttc-b-valor">—</div><div class="ttc-periodo" id="ttc-b-periodo"></div></div>
-      </div>
-    </div>
-
-    <!-- Gráficas por sucursal -->
-    <div class="tend-sucursales" id="tend-sucursales-wrap" style="display:none;">
-      <!-- Armenia -->
-      <div class="tend-suc-panel armenia">
-        <div class="tend-suc-nombre">🔴 Armenia</div>
-        <div class="tend-chart-wrap"><canvas id="tend-chart-armenia"></canvas></div>
-        <div class="tend-resumen-mini">
-          <div class="trm azul"><div class="trm-label">Período A</div><div class="trm-valor" id="tr-arm-a">—</div></div>
-          <div class="trm ambar"><div class="trm-label">Período B</div><div class="trm-valor" id="tr-arm-b">—</div></div>
-          <div class="trm" id="tr-arm-dif-card"><div class="trm-label">Diferencia</div><div class="trm-valor" id="tr-arm-dif">—</div></div>
-          <div class="trm" id="tr-arm-pct-card"><div class="trm-label">Variación</div><div class="trm-valor" id="tr-arm-pct">—</div></div>
-        </div>
-      </div>
-      <!-- Izalco -->
-      <div class="tend-suc-panel izalco">
-        <div class="tend-suc-nombre">🟠 Izalco</div>
-        <div class="tend-chart-wrap"><canvas id="tend-chart-izalco"></canvas></div>
-        <div class="tend-resumen-mini">
-          <div class="trm azul"><div class="trm-label">Período A</div><div class="trm-valor" id="tr-izl-a">—</div></div>
-          <div class="trm ambar"><div class="trm-label">Período B</div><div class="trm-valor" id="tr-izl-b">—</div></div>
-          <div class="trm" id="tr-izl-dif-card"><div class="trm-label">Diferencia</div><div class="trm-valor" id="tr-izl-dif">—</div></div>
-          <div class="trm" id="tr-izl-pct-card"><div class="trm-label">Variación</div><div class="trm-valor" id="tr-izl-pct">—</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Combinado -->
-    <div id="tend-combinado-wrap" style="display:none;">
-      <div class="tend-suc-panel combinado">
-        <div class="tend-suc-nombre">⚫ Total combinado</div>
-        <div class="tend-chart-wrap" style="height:220px;"><canvas id="tend-chart-combinado"></canvas></div>
-        <div class="tend-resumen-mini">
-          <div class="trm azul"><div class="trm-label">Período A</div><div class="trm-valor" id="tr-comb-a">—</div></div>
-          <div class="trm ambar"><div class="trm-label">Período B</div><div class="trm-valor" id="tr-comb-b">—</div></div>
-          <div class="trm" id="tr-comb-dif-card"><div class="trm-label">Diferencia</div><div class="trm-valor" id="tr-comb-dif">—</div></div>
-          <div class="trm" id="tr-comb-pct-card"><div class="trm-label">Variación</div><div class="trm-valor" id="tr-comb-pct">—</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </main>
 
 <script>
@@ -349,18 +225,16 @@
 
   function addDays(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return toISO(d); }
   function restarAnio(iso) { const d = new Date(iso + 'T12:00:00'); d.setFullYear(d.getFullYear() - 1); return toISO(d); }
-  function hoy()        { return toISO(new Date()); }
-  function ayer()       { const d = new Date(); d.setDate(d.getDate()-1); return toISO(d); }
-  function inicioSem()  { const d = new Date(); d.setDate(d.getDate()-d.getDay()); return toISO(d); }
-  function inicioMes()  { const d = new Date(); d.setDate(1); return toISO(d); }
-
-  function fmtLabel(label) {
-    if (/^\d{4}-\d{2}-\d{2}$/.test(label)) return fmtDate(label);
-    if (/^\d{4}-\d{2}$/.test(label)) { const [y,m]=label.split('-'); return new Date(y,m-1,1).toLocaleDateString('es-SV',{month:'short',year:'numeric'}); }
-    return label;
+  function hoy()       { return toISO(new Date()); }
+  function ayer()      { const d = new Date(); d.setDate(d.getDate()-1); return toISO(d); }
+  function inicioSem() { const d = new Date(); d.setDate(d.getDate()-d.getDay()); return toISO(d); }
+  function inicioMes() { const d = new Date(); d.setDate(1); return toISO(d); }
+  function fmtLabel(l) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(l)) return fmtDate(l);
+    if (/^\d{4}-\d{2}$/.test(l)) { const [y,m]=l.split('-'); return new Date(y,m-1,1).toLocaleDateString('es-SV',{month:'short',year:'numeric'}); }
+    return l;
   }
 
-  // ── Navegación ────────────────────────────────────────────────────────
   function showPanel(id, el) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
@@ -370,13 +244,12 @@
 
   // ── Comparador ────────────────────────────────────────────────────────
   function sincronizarB() {
-    const aFrom = document.getElementById('a-from').value;
-    const aTo   = document.getElementById('a-to').value;
-    if (aFrom) document.getElementById('b-from').value = restarAnio(aFrom);
-    if (aTo)   document.getElementById('b-to').value   = restarAnio(aTo);
+    const f=document.getElementById('a-from').value, t=document.getElementById('a-to').value;
+    if (f) document.getElementById('b-from').value=restarAnio(f);
+    if (t) document.getElementById('b-to').value=restarAnio(t);
   }
   function setRapido(tipo) {
-    const f = document.getElementById('a-from'), t = document.getElementById('a-to');
+    const f=document.getElementById('a-from'), t=document.getElementById('a-to');
     if (tipo==='hoy')    { f.value=hoy();       t.value=hoy(); }
     if (tipo==='ayer')   { f.value=ayer();      t.value=ayer(); }
     if (tipo==='semana') { f.value=inicioSem(); t.value=hoy(); }
@@ -392,13 +265,12 @@
   }
 
   function renderDif(prefix, totalA, totalB) {
-    const diff = totalA - totalB;
-    const pct = totalB !== 0 ? ((diff/totalB)*100).toFixed(1) : null;
-    const el = document.getElementById(`${prefix}-dif`);
-    el.className = 'diferencia' + (diff < 0 ? ' negativa' : '');
-    document.getElementById(`${prefix}-dif-label`).textContent = diff >= 0 ? 'Período A mayor en' : 'Período A menor en';
-    document.getElementById(`${prefix}-dif-valor`).textContent = fmt(Math.abs(diff));
-    document.getElementById(`${prefix}-dif-pct`).textContent = pct !== null ? `${diff>=0?'▲':'▼'} ${Math.abs(pct)}% vs período B` : '';
+    const diff=totalA-totalB, pct=totalB!==0?((diff/totalB)*100).toFixed(1):null;
+    const el=document.getElementById(`${prefix}-dif`);
+    el.className='diferencia'+(diff<0?' negativa':'');
+    document.getElementById(`${prefix}-dif-label`).textContent=diff>=0?'Período A mayor en':'Período A menor en';
+    document.getElementById(`${prefix}-dif-valor`).textContent=fmt(Math.abs(diff));
+    document.getElementById(`${prefix}-dif-pct`).textContent=pct!==null?`${diff>=0?'▲':'▼'} ${Math.abs(pct)}% vs período B`:'';
   }
 
   async function consultar() {
@@ -410,11 +282,11 @@
     document.getElementById('total-combinado-wrap').style.display='none';
     ['arm-a-total','arm-b-total','izl-a-total','izl-b-total'].forEach(id=>document.getElementById(id).textContent='...');
     ['arm-dif','izl-dif'].forEach(id=>document.getElementById(id).className='diferencia oculta');
-    const periodoA = aFrom===aTo ? fmtDate(aFrom) : `${fmtDate(aFrom)} – ${fmtDate(aTo)}`;
-    const periodoB = bFrom===bTo ? fmtDate(bFrom) : `${fmtDate(bFrom)} – ${fmtDate(bTo)}`;
-    ['arm-a-periodo','izl-a-periodo'].forEach(id=>document.getElementById(id).textContent=periodoA);
-    ['arm-b-periodo','izl-b-periodo'].forEach(id=>document.getElementById(id).textContent=periodoB);
-    const [rAA,rAB,rIA,rIB] = await Promise.allSettled([fetchTotal('armenia',aFrom,aTo),fetchTotal('armenia',bFrom,bTo),fetchTotal('izalco',aFrom,aTo),fetchTotal('izalco',bFrom,bTo)]);
+    const pA=aFrom===aTo?fmtDate(aFrom):`${fmtDate(aFrom)} – ${fmtDate(aTo)}`;
+    const pB=bFrom===bTo?fmtDate(bFrom):`${fmtDate(bFrom)} – ${fmtDate(bTo)}`;
+    ['arm-a-periodo','izl-a-periodo'].forEach(id=>document.getElementById(id).textContent=pA);
+    ['arm-b-periodo','izl-b-periodo'].forEach(id=>document.getElementById(id).textContent=pB);
+    const [rAA,rAB,rIA,rIB]=await Promise.allSettled([fetchTotal('armenia',aFrom,aTo),fetchTotal('armenia',bFrom,bTo),fetchTotal('izalco',aFrom,aTo),fetchTotal('izalco',bFrom,bTo)]);
     const armA=rAA.status==='fulfilled'?rAA.value:null, armB=rAB.status==='fulfilled'?rAB.value:null;
     const izlA=rIA.status==='fulfilled'?rIA.value:null, izlB=rIB.status==='fulfilled'?rIB.value:null;
     document.getElementById('arm-a-total').textContent=armA!==null?fmt(armA):'—';
@@ -425,16 +297,16 @@
     if (izlA!==null&&izlB!==null) renderDif('izl',izlA,izlB);
     if (armA!==null&&izlA!==null&&armB!==null&&izlB!==null) {
       document.getElementById('tc-a-valor').textContent=fmt(armA+izlA);
-      document.getElementById('tc-a-periodo').textContent=periodoA;
+      document.getElementById('tc-a-periodo').textContent=pA;
       document.getElementById('tc-b-valor').textContent=fmt(armB+izlB);
-      document.getElementById('tc-b-periodo').textContent=periodoB;
+      document.getElementById('tc-b-periodo').textContent=pB;
       document.getElementById('total-combinado-wrap').style.display='block';
     }
     document.getElementById('estado-comparador').textContent='';
     document.getElementById('btn-comparar').disabled=false;
   }
 
-  // ── Gráficas ─────────────────────────────────────────────────────────
+  // ── Gráficas ──────────────────────────────────────────────────────────
   let agrupacion='diario', sucursalesActivas={armenia:true,izalco:true,combinado:true}, miChart=null;
   document.getElementById('g-from').value=inicioMes();
   document.getElementById('g-to').value=hoy();
@@ -465,8 +337,8 @@
     const estado=document.getElementById('estado-graficas'), btn=document.getElementById('btn-graficar');
     estado.textContent='Consultando datos...'; btn.disabled=true;
     try {
-      const pA = (sucursalesActivas.armenia||sucursalesActivas.combinado) ? await fetchVentas('armenia') : null;
-      const pI = (sucursalesActivas.izalco||sucursalesActivas.combinado)  ? await fetchVentas('izalco')  : null;
+      const pA=(sucursalesActivas.armenia||sucursalesActivas.combinado)?await fetchVentas('armenia'):null;
+      const pI=(sucursalesActivas.izalco||sucursalesActivas.combinado)?await fetchVentas('izalco'):null;
       const labels=(pA||pI).map(p=>fmtLabel(p.label));
       const datasets=[];
       if (sucursalesActivas.armenia&&pA) datasets.push({type:'bar',label:'🔴 Armenia',data:pA.map(p=>p.total),backgroundColor:'rgba(230,51,18,0.7)',borderColor:'#e63312',borderWidth:1,borderRadius:4,order:2});
@@ -484,143 +356,6 @@
       estado.textContent='';
     } catch(e) { estado.textContent='Error: '+e.message; }
     finally { btn.disabled=false; }
-  }
-
-  // ── Tendencias ────────────────────────────────────────────────────────
-  let tAgrup = 'diario';
-  const tendCharts = {};
-
-  function sincronizarTB() {
-    const f=document.getElementById('t-a-from').value, t=document.getElementById('t-a-to').value;
-    if (f) document.getElementById('t-b-from').value=restarAnio(f);
-    if (t) document.getElementById('t-b-to').value=restarAnio(t);
-  }
-  function setTRapido(per, tipo) {
-    const f=document.getElementById(`t-${per}-from`), t=document.getElementById(`t-${per}-to`);
-    if (tipo==='hoy')    { f.value=hoy();       t.value=hoy(); }
-    if (tipo==='ayer')   { f.value=ayer();      t.value=ayer(); }
-    if (tipo==='semana') { f.value=inicioSem(); t.value=hoy(); }
-    if (tipo==='mes')    { f.value=inicioMes(); t.value=hoy(); }
-    if (per==='a') sincronizarTB();
-  }
-  function setTAgrup(tipo, btn) {
-    tAgrup=tipo;
-    document.querySelectorAll('#t-agrup-btns button').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-
-  // Default: A = este mes, B = mes anterior
-  document.getElementById('t-a-from').value=inicioMes();
-  document.getElementById('t-a-to').value=hoy();
-  sincronizarTB();
-
-  async function fetchVentasTend(suc, from, to) {
-    const url=`${PROXY}/${suc}/ventas?agrupacion=${tAgrup}&from=${from}&to=${to}`;
-    const res=await fetch(url); if (!res.ok) throw new Error('Error '+res.status);
-    return (await res.json()).puntos;
-  }
-
-  function buildTendChart(canvasId, puntosA, puntosB) {
-    if (tendCharts[canvasId]) tendCharts[canvasId].destroy();
-    const maxLen=Math.max(puntosA.length, puntosB.length);
-    const labels=Array.from({length:maxLen},(_,i)=>`${i+1}`);
-    const valA=puntosA.map(p=>p.total);
-    const valB=puntosB.map(p=>p.total);
-    tendCharts[canvasId]=new Chart(document.getElementById(canvasId).getContext('2d'),{
-      type:'line',
-      data:{labels,datasets:[
-        {label:'📘 Período A',data:valA,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,0.06)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#2563eb',tension:0.35,fill:false},
-        {label:'📕 Período B',data:valB,borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,0.06)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#dc2626',tension:0.35,fill:false},
-        {label:'_band',data:valA,borderColor:'transparent',backgroundColor:'rgba(37,99,235,0.06)',borderWidth:0,pointRadius:0,tension:0.35,fill:'+1'},
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,
-        interaction:{mode:'index',intersect:false},
-        plugins:{
-          legend:{position:'top',labels:{filter:item=>item.text!=='_band'}},
-          tooltip:{callbacks:{
-            title:(items)=>{
-              const i=items[0].dataIndex;
-              const lA=puntosA[i]?fmtLabel(puntosA[i].label):'';
-              const lB=puntosB[i]?fmtLabel(puntosB[i].label):'';
-              return[`A: ${lA}`,`B: ${lB}`];
-            },
-            label:ctx=>{
-              if(ctx.dataset.label==='_band') return null;
-              return ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`;
-            },
-            afterBody:(items)=>{
-              const i=items[0].dataIndex;
-              const diff=(valA[i]??0)-(valB[i]??0);
-              return['',`Dif: ${diff>=0?'+':''}${fmt(diff)}`];
-            }
-          }}
-        },
-        scales:{
-          x:{grid:{display:false},ticks:{maxTicksLimit:12,font:{size:10}}},
-          y:{ticks:{callback:v=>'$'+v.toLocaleString('es-SV'),font:{size:10}},grid:{color:'#f0f0f0'}}
-        }
-      }
-    });
-    return {valA, valB};
-  }
-
-  function setTrm(prefix, valA, valB) {
-    const totalA=valA.reduce((s,v)=>s+v,0), totalB=valB.reduce((s,v)=>s+v,0);
-    const diff=totalA-totalB, pct=totalB!==0?((diff/totalB)*100).toFixed(1):null;
-    document.getElementById(`tr-${prefix}-a`).textContent=fmt(totalA);
-    document.getElementById(`tr-${prefix}-b`).textContent=fmt(totalB);
-    document.getElementById(`tr-${prefix}-dif`).textContent=(diff>=0?'+':'')+fmt(diff);
-    document.getElementById(`tr-${prefix}-pct`).textContent=pct!==null?`${diff>=0?'▲':'▼'} ${Math.abs(pct)}%`:'—';
-    document.getElementById(`tr-${prefix}-dif-card`).className=`trm ${diff>=0?'verde':'rojo'}`;
-    document.getElementById(`tr-${prefix}-pct-card`).className=`trm ${diff>=0?'verde':'rojo'}`;
-    return {totalA, totalB};
-  }
-
-  async function graficarTendencias() {
-    const aFrom=document.getElementById('t-a-from').value, aTo=document.getElementById('t-a-to').value;
-    const bFrom=document.getElementById('t-b-from').value, bTo=document.getElementById('t-b-to').value;
-    if (!aFrom||!aTo||!bFrom||!bTo) { document.getElementById('estado-tendencias').textContent='Completa todos los campos.'; return; }
-    document.getElementById('estado-tendencias').textContent='Consultando...';
-    document.getElementById('btn-tendencias').disabled=true;
-    document.getElementById('tend-sucursales-wrap').style.display='none';
-    document.getElementById('tend-combinado-wrap').style.display='none';
-    document.getElementById('tend-total-wrap').style.display='none';
-
-    try {
-      const [armA,armB,izlA,izlB]=await Promise.all([
-        fetchVentasTend('armenia',aFrom,aTo),fetchVentasTend('armenia',bFrom,bTo),
-        fetchVentasTend('izalco',aFrom,aTo), fetchVentasTend('izalco',bFrom,bTo),
-      ]);
-
-      const {valA:vAA,valB:vAB}=buildTendChart('tend-chart-armenia',armA,armB);
-      const {valA:vIA,valB:vIB}=buildTendChart('tend-chart-izalco',izlA,izlB);
-
-      const {totalA:tAA,totalB:tAB}=setTrm('arm',vAA,vAB);
-      const {totalA:tIA,totalB:tIB}=setTrm('izl',vIA,vIB);
-
-      // Combinado
-      const combA=armA.map((p,i)=>({label:p.label,total:p.total+(izlA[i]?.total??0)}));
-      const combB=armB.map((p,i)=>({label:p.label,total:p.total+(izlB[i]?.total??0)}));
-      buildTendChart('tend-chart-combinado',combA,combB);
-      setTrm('comb',combA.map(p=>p.total),combB.map(p=>p.total));
-
-      // Totales combinados
-      const periodoA=aFrom===aTo?fmtDate(aFrom):`${fmtDate(aFrom)} – ${fmtDate(aTo)}`;
-      const periodoB=bFrom===bTo?fmtDate(bFrom):`${fmtDate(bFrom)} – ${fmtDate(bTo)}`;
-      document.getElementById('ttc-a-valor').textContent=fmt(tAA+tIA);
-      document.getElementById('ttc-a-periodo').textContent=periodoA;
-      document.getElementById('ttc-b-valor').textContent=fmt(tAB+tIB);
-      document.getElementById('ttc-b-periodo').textContent=periodoB;
-
-      document.getElementById('tend-total-wrap').style.display='block';
-      document.getElementById('tend-sucursales-wrap').style.display='grid';
-      document.getElementById('tend-combinado-wrap').style.display='block';
-      document.getElementById('estado-tendencias').textContent='';
-    } catch(e) {
-      document.getElementById('estado-tendencias').textContent='Error: '+e.message;
-    } finally {
-      document.getElementById('btn-tendencias').disabled=false;
-    }
   }
 </script>
 </body>

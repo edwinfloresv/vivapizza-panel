@@ -9,7 +9,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: sans-serif; background: #f5f5f5; display: flex; min-height: 100vh; }
 
-    /* Sidebar */
+    /* Sidebar — desktop */
     .sidebar { width: 220px; min-height: 100vh; background: #111; display: flex; flex-direction: column; padding: 1.5rem 0; flex-shrink: 0; }
     .sidebar-logo { color: #fff; font-size: 16px; font-weight: 700; padding: 0 1.25rem 1.5rem; border-bottom: 1px solid #222; }
     .sidebar-logo span { color: #f59e0b; }
@@ -21,6 +21,56 @@
 
     /* Main */
     .main { flex: 1; padding: 2rem 1.5rem; overflow-x: hidden; }
+
+    /* ── RESPONSIVE MÓVIL ── */
+    @media (max-width: 640px) {
+      body { flex-direction: column; }
+
+      /* Sidebar se convierte en barra superior */
+      .sidebar {
+        width: 100%; min-height: auto;
+        flex-direction: row; align-items: center;
+        padding: 0; position: sticky; top: 0; z-index: 100;
+      }
+      .sidebar-logo {
+        padding: 0.75rem 1rem;
+        border-bottom: none; border-right: 1px solid #222;
+        font-size: 14px; white-space: nowrap;
+      }
+      .sidebar-menu {
+        margin-top: 0; display: flex; flex-direction: row; flex: 1;
+      }
+      .menu-item {
+        flex: 1; justify-content: center; flex-direction: column;
+        gap: 2px; padding: 0.6rem 0.5rem; font-size: 11px;
+        border-left: none; border-bottom: 3px solid transparent;
+        text-align: center;
+      }
+      .menu-item.active { border-left: none; border-bottom-color: #f59e0b; }
+      .menu-item .icon { font-size: 20px; width: auto; }
+
+      /* Main ocupa toda la pantalla */
+      .main { padding: 1rem; }
+      h2 { font-size: 16px; margin-bottom: 1rem; }
+      .card { padding: 1rem; }
+
+      /* Grids de 2 columnas → 1 columna */
+      .grid-2 { grid-template-columns: 1fr; }
+      .sucursales { grid-template-columns: 1fr; }
+      .total-combinado-grid { grid-template-columns: 1fr; }
+      .comparacion { grid-template-columns: 1fr 1fr; gap: 8px; }
+
+      /* Totales más pequeños en móvil */
+      .res-bloque .total { font-size: 18px; }
+      .total-card .tc-valor { font-size: 24px; }
+
+      /* Gráfica más pequeña */
+      .chart-container { height: 260px; }
+
+      /* Botones de acceso rápido más compactos */
+      .accesos button { font-size: 11px; padding: 3px 10px; }
+      .agrupacion-btns button { font-size: 12px; padding: 5px 12px; }
+    }
     .panel { display: none; }
     .panel.active { display: block; }
     h2 { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 1.25rem; }
@@ -360,3 +410,4 @@
 </script>
 </body>
 </html>
+

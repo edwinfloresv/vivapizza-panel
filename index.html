@@ -683,47 +683,33 @@
       });
       document.getElementById('tipos-dona-wrap').style.display = 'grid';
 
-      document.getElementById('estado-tipos').textContent = `${ordenes.length} órdenes analizadas`;
-
-      // Análisis IA
+      // Análisis IA via proxy
       document.getElementById('ia-wrap').style.display = 'block';
       document.getElementById('ia-texto').textContent = 'Generando análisis...';
 
-      const sucNombre = tipoSucursal === 'armenia' ? 'Armenia' : 'Izalco';
+      const sucNombre  = tipoSucursal === 'armenia' ? 'Armenia' : 'Izalco';
       const periodoTxt = from === to ? fmtDate(from) : `${fmtDate(from)} al ${fmtDate(to)}`;
       const resumenData = orden.map(([tipo, data]) =>
         `- ${tipo}: ${fmt(data.monto)} (${((data.monto/totalMonto)*100).toFixed(1)}% del monto), ${data.cantidad} órdenes (${((data.cantidad/totalCantidad)*100).toFixed(1)}%)`
       ).join('\n');
 
-      const iaRes = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          messages: [{
-            role: 'user',
-            content: `Eres un analista de negocio experto en restaurantes y pizzerías. Analiza estos datos de ventas de Viva Pizza sucursal ${sucNombre} para el período ${periodoTxt}:
-
-Total de órdenes: ${totalCantidad}
-Monto total: ${fmt(totalMonto)}
-
-Desglose por tipo de orden:
-${resumenData}
-
-Escribe un análisis breve (3-4 párrafos) en español con:
-1. Qué tipo de orden domina y qué significa para el negocio
-2. Oportunidades o alertas que ves en la distribución
-3. Una recomendación concreta para el dueño
-
-Sé directo, práctico y enfocado en acciones. No uses bullet points, escribe en párrafos.`
-          }]
-        })
-      });
-
-      const iaData = await iaRes.json();
-      const iaTexto = iaData.content?.[0]?.text || 'No se pudo generar el análisis.';
-      document.getElementById('ia-texto').textContent = iaTexto;
+      try {
+        const iaRes = await fetch(`${PROXY}/ia/analisis-tipos`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sucursal: sucNombre,
+            periodo: periodoTxt,
+            totalCantidad,
+            totalMonto: fmt(totalMonto),
+            resumen: resumenData
+          })
+        });
+        const iaData = await iaRes.json();
+        document.getElementById('ia-texto').textContent = iaData.texto || iaData.error || 'Sin respuesta.';
+      } catch(iaErr) {
+        document.getElementById('ia-texto').textContent = 'No se pudo generar el análisis en este momento.';
+      }
 
     } catch(e) {
       document.getElementById('estado-tipos').textContent = 'Error: ' + e.message;

@@ -163,6 +163,33 @@
     .dona-card { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
     .dona-titulo { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 1rem; text-align: center; }
     .dona-container { position: relative; height: 220px; }
+
+    /* Totales globales */
+    .totales-globales { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+    @media (max-width: 640px) { .totales-globales { grid-template-columns: 1fr; } }
+    .total-global-card { border-radius: 12px; padding: 1.25rem 1.5rem; text-align: center; }
+    .total-global-card.monto    { background: #111; color: #fff; }
+    .total-global-card.cantidad { background: #1e40af; color: #fff; }
+    .tg-label { font-size: 12px; color: #aaa; margin-bottom: 4px; }
+    .tg-valor { font-size: 32px; font-weight: 700; }
+
+    /* Tabla resumen */
+    .tabla-resumen { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .tabla-resumen th { background: #f5f5f5; padding: 8px 12px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #666; border-bottom: 2px solid #eee; }
+    .tabla-resumen td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+    .tabla-resumen tr:last-child td { border-bottom: none; font-weight: 700; background: #fafafa; }
+    .tabla-resumen .tipo-badge { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+    .tabla-resumen td:nth-child(2), .tabla-resumen td:nth-child(3),
+    .tabla-resumen td:nth-child(4), .tabla-resumen td:nth-child(5) { text-align: right; }
+    .tabla-resumen th:nth-child(2), .tabla-resumen th:nth-child(3),
+    .tabla-resumen th:nth-child(4), .tabla-resumen th:nth-child(5) { text-align: right; }
+
+    /* Análisis IA */
+    .ia-card { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 12px; padding: 1.25rem 1.5rem; }
+    .ia-header { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+    .ia-header .ia-icon { font-size: 20px; }
+    .ia-header .ia-titulo { font-size: 14px; font-weight: 700; color: #0369a1; }
+    .ia-texto { font-size: 14px; color: #1e3a5f; line-height: 1.7; white-space: pre-wrap; }
     .chart-container { position: relative; height: 340px; margin-bottom: 1.25rem; }
     .resumen-graficas { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
     .res-mini { background: #fff; border-radius: 10px; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); text-align: center; }
@@ -321,8 +348,28 @@
       <div class="estado-txt" id="estado-tipos"></div>
     </div>
 
+    <!-- Totales globales -->
+    <div class="totales-globales" id="totales-globales" style="display:none;">
+      <div class="total-global-card monto">
+        <div class="tg-label">Monto total del período</div>
+        <div class="tg-valor" id="tg-monto">—</div>
+      </div>
+      <div class="total-global-card cantidad">
+        <div class="tg-label">Total de órdenes</div>
+        <div class="tg-valor" id="tg-cantidad">—</div>
+      </div>
+    </div>
+
     <!-- Tarjetas por tipo -->
     <div class="tipos-grid" id="tipos-grid" style="display:none;"></div>
+
+    <!-- Tabla resumen -->
+    <div class="card" id="tabla-wrap" style="display:none;">
+      <div class="seccion-titulo" style="margin-bottom:1rem;">Resumen detallado</div>
+      <div style="overflow-x:auto;">
+        <table class="tabla-resumen" id="tabla-resumen"></table>
+      </div>
+    </div>
 
     <!-- Donas -->
     <div class="tipos-dona-wrap" id="tipos-dona-wrap" style="display:none;">
@@ -335,6 +382,16 @@
         <div class="dona-container"><canvas id="dona-cantidad"></canvas></div>
       </div>
     </div>
+
+    <!-- Análisis IA -->
+    <div class="ia-card" id="ia-wrap" style="display:none; margin-top:1.25rem;">
+      <div class="ia-header">
+        <span class="ia-icon">🤖</span>
+        <span class="ia-titulo">Análisis inteligente</span>
+      </div>
+      <div class="ia-texto" id="ia-texto"></div>
+    </div>
+
   </div>
 
 </main>
@@ -515,14 +572,18 @@
 
     document.getElementById('estado-tipos').textContent = 'Consultando...';
     document.getElementById('btn-tipos').disabled = true;
+    document.getElementById('totales-globales').style.display = 'none';
     document.getElementById('tipos-grid').style.display = 'none';
+    document.getElementById('tabla-wrap').style.display = 'none';
     document.getElementById('tipos-dona-wrap').style.display = 'none';
+    document.getElementById('ia-wrap').style.display = 'none';
 
     try {
       const res = await fetch(`${PROXY}/${tipoSucursal}/orden-trabajo/lista?from=${from}&to=${addDays(to, 1)}`);
       if (!res.ok) throw new Error('Error ' + res.status);
       const ordenes = await res.json();
 
+      // Agrupar por ubicacionOrden
       const grupos = {};
       for (const o of ordenes) {
         const tipo = (o.ubicacionOrden || 'SIN TIPO').trim().toUpperCase();
@@ -532,8 +593,15 @@
       }
 
       const totalMonto    = Object.values(grupos).reduce((s, g) => s + g.monto, 0);
+      const totalCantidad = Object.values(grupos).reduce((s, g) => s + g.cantidad, 0);
       const orden = Object.entries(grupos).sort((a, b) => b[1].monto - a[1].monto);
 
+      // Totales globales
+      document.getElementById('tg-monto').textContent    = fmt(totalMonto);
+      document.getElementById('tg-cantidad').textContent = totalCantidad.toLocaleString('es-SV');
+      document.getElementById('totales-globales').style.display = 'grid';
+
+      // Tarjetas
       const grid = document.getElementById('tipos-grid');
       grid.innerHTML = orden.map(([tipo, data]) => `
         <div class="tipo-card ${tipo}">
@@ -545,6 +613,40 @@
       `).join('');
       grid.style.display = 'grid';
 
+      // Tabla resumen
+      const tabla = document.getElementById('tabla-resumen');
+      tabla.innerHTML = `
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Monto</th>
+            <th>% Monto</th>
+            <th>Órdenes</th>
+            <th>% Órdenes</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${orden.map(([tipo, data]) => `
+            <tr>
+              <td><span class="tipo-badge" style="background:${TIPOS_COLORES[tipo]||'#94a3b8'}"></span>${tipo}</td>
+              <td>${fmt(data.monto)}</td>
+              <td>${((data.monto / totalMonto) * 100).toFixed(1)}%</td>
+              <td>${data.cantidad.toLocaleString('es-SV')}</td>
+              <td>${((data.cantidad / totalCantidad) * 100).toFixed(1)}%</td>
+            </tr>
+          `).join('')}
+          <tr>
+            <td>TOTAL</td>
+            <td>${fmt(totalMonto)}</td>
+            <td>100%</td>
+            <td>${totalCantidad.toLocaleString('es-SV')}</td>
+            <td>100%</td>
+          </tr>
+        </tbody>
+      `;
+      document.getElementById('tabla-wrap').style.display = 'block';
+
+      // Donas
       const labels     = orden.map(([t]) => t);
       const montos     = orden.map(([, d]) => d.monto);
       const cantidades = orden.map(([, d]) => d.cantidad);
@@ -553,7 +655,7 @@
       if (donaMontoChart)    donaMontoChart.destroy();
       if (donaCantidadChart) donaCantidadChart.destroy();
 
-      const donaBase = (labelKey) => ({
+      const donaBase = (essMonto) => ({
         type: 'doughnut',
         options: {
           responsive: true, maintainAspectRatio: false,
@@ -563,7 +665,7 @@
               label: ctx => {
                 const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
                 const pct = ((ctx.parsed / total) * 100).toFixed(1);
-                const val = labelKey === 'monto' ? fmt(ctx.parsed) : ctx.parsed + ' órdenes';
+                const val = essMonto ? fmt(ctx.parsed) : ctx.parsed + ' órdenes';
                 return ` ${ctx.label}: ${val} (${pct}%)`;
               }
             }}
@@ -572,16 +674,56 @@
       });
 
       donaMontoChart = new Chart(document.getElementById('dona-monto').getContext('2d'), {
-        ...donaBase('monto'),
+        ...donaBase(true),
         data: { labels, datasets: [{ data: montos, backgroundColor: colores, borderWidth: 2, borderColor: '#fff' }] }
       });
       donaCantidadChart = new Chart(document.getElementById('dona-cantidad').getContext('2d'), {
-        ...donaBase('cantidad'),
+        ...donaBase(false),
         data: { labels, datasets: [{ data: cantidades, backgroundColor: colores, borderWidth: 2, borderColor: '#fff' }] }
       });
-
       document.getElementById('tipos-dona-wrap').style.display = 'grid';
+
       document.getElementById('estado-tipos').textContent = `${ordenes.length} órdenes analizadas`;
+
+      // Análisis IA
+      document.getElementById('ia-wrap').style.display = 'block';
+      document.getElementById('ia-texto').textContent = 'Generando análisis...';
+
+      const sucNombre = tipoSucursal === 'armenia' ? 'Armenia' : 'Izalco';
+      const periodoTxt = from === to ? fmtDate(from) : `${fmtDate(from)} al ${fmtDate(to)}`;
+      const resumenData = orden.map(([tipo, data]) =>
+        `- ${tipo}: ${fmt(data.monto)} (${((data.monto/totalMonto)*100).toFixed(1)}% del monto), ${data.cantidad} órdenes (${((data.cantidad/totalCantidad)*100).toFixed(1)}%)`
+      ).join('\n');
+
+      const iaRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 1000,
+          messages: [{
+            role: 'user',
+            content: `Eres un analista de negocio experto en restaurantes y pizzerías. Analiza estos datos de ventas de Viva Pizza sucursal ${sucNombre} para el período ${periodoTxt}:
+
+Total de órdenes: ${totalCantidad}
+Monto total: ${fmt(totalMonto)}
+
+Desglose por tipo de orden:
+${resumenData}
+
+Escribe un análisis breve (3-4 párrafos) en español con:
+1. Qué tipo de orden domina y qué significa para el negocio
+2. Oportunidades o alertas que ves en la distribución
+3. Una recomendación concreta para el dueño
+
+Sé directo, práctico y enfocado en acciones. No uses bullet points, escribe en párrafos.`
+          }]
+        })
+      });
+
+      const iaData = await iaRes.json();
+      const iaTexto = iaData.content?.[0]?.text || 'No se pudo generar el análisis.';
+      document.getElementById('ia-texto').textContent = iaTexto;
 
     } catch(e) {
       document.getElementById('estado-tipos').textContent = 'Error: ' + e.message;

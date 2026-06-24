@@ -194,7 +194,16 @@
     .btn-ia:hover { background: #0284c7; }
     .btn-ia:disabled { background: #aaa; cursor: not-allowed; }
 
-    /* Chat */
+    /* Exportar para Claude.ai */
+    .export-wrap { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 1.25rem 1.5rem; margin-top: 1.25rem; }
+    .export-titulo { font-size: 13px; font-weight: 700; color: #15803d; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 6px; }
+    .export-desc { font-size: 12px; color: #166534; margin-bottom: 1rem; line-height: 1.5; }
+    .export-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-export { padding: 8px 16px; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; font-weight: 600; }
+    .btn-export.txt { background: #15803d; color: #fff; }
+    .btn-export.txt:hover { background: #166534; }
+    .btn-export.csv { background: #0369a1; color: #fff; }
+    .btn-export.csv:hover { background: #0284c7; }
     .chat-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-top: 1.25rem; overflow: hidden; }
     .chat-header { background: #0369a1; color: #fff; padding: 0.875rem 1.25rem; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
     .chat-mensajes { height: 360px; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 10px; background: #f8fafc; }
@@ -414,6 +423,16 @@
         <span class="ia-titulo">Análisis inteligente</span>
       </div>
       <div class="ia-texto" id="ia-texto"></div>
+    </div>
+
+    <!-- Exportar para Claude.ai -->
+    <div class="export-wrap" id="export-wrap" style="display:none;">
+      <div class="export-titulo">📤 Exportar para Claude.ai Pro</div>
+      <div class="export-desc">Descarga estos archivos y súbelos a Claude.ai para continuar el análisis sin costo de API. Sube el CSV como archivo adjunto y pega el contenido del TXT como mensaje inicial.</div>
+      <div class="export-btns">
+        <button class="btn-export txt" onclick="exportarTXT()">📄 Descargar prompt.txt</button>
+        <button class="btn-export csv" onclick="exportarCSV()">📊 Descargar datos.csv</button>
+      </div>
     </div>
 
     <!-- Chat estratégico -->
@@ -718,6 +737,9 @@
       });
       document.getElementById('tipos-dona-wrap').style.display = 'grid';
 
+      // Guardar órdenes completas para exportar
+      window._ordenesCompletas = ordenes;
+
       // Guardar contexto para análisis IA posterior
       window._iaContexto = {
         sucursal: tipoSucursal === 'armenia' ? 'Armenia' : 'Izalco',
@@ -729,10 +751,12 @@
         ).join('\n')
       };
 
-      // Mostrar botón IA y ocultar análisis previo
+      // Mostrar botón IA, exportar y ocultar análisis previo
       document.getElementById('btn-ia-wrap').style.display = 'block';
       document.getElementById('btn-ia').disabled = false;
       document.getElementById('ia-wrap').style.display = 'none';
+      document.getElementById('export-wrap').style.display = 'block';
+      document.getElementById('chat-wrap').style.display = 'none';
       document.getElementById('estado-tipos').textContent = `${ordenes.length} órdenes analizadas`;
 
     } catch(e) {
@@ -837,6 +861,75 @@
       input.focus();
       document.getElementById('chat-mensajes').scrollTop = document.getElementById('chat-mensajes').scrollHeight;
     }
+  }
+  function descargarArchivo(nombre, contenido, tipo) {
+    const blob = new Blob([contenido], { type: tipo });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = nombre; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function exportarTXT() {
+    const ctx = window._iaContexto;
+    if (!ctx) return;
+
+    const sucNombre = ctx.sucursal;
+    const periodo   = ctx.periodo;
+
+    const txt = `=== ANÁLISIS VIVA PIZZA · ${sucNombre.toUpperCase()} ===
+Período: ${periodo}
+Exportado: ${new Date().toLocaleString('es-SV')}
+
+--- RESUMEN POR TIPO DE ORDEN ---
+${ctx.resumen}
+
+Total órdenes: ${ctx.totalCantidad}
+Monto total:   ${ctx.totalMonto}
+
+--- INSTRUCCIONES ---
+Adjunta el archivo datos.csv a esta conversación.
+Soy Edwin, dueño de Viva Pizza en El Salvador (sucursal ${sucNombre}).
+Te comparto los datos de ventas del período ${periodo} desglosados por tipo de orden (EXPRESS, LLEVAR, COMEDOR, BARRA, TERRAZA).
+
+El archivo CSV adjunto contiene el detalle de cada orden: fecha, tipo, monto, cliente, método de pago, vendedor y más.
+
+Quiero que me ayudes a:
+1. Analizar el comportamiento de ventas por tipo de orden
+2. Identificar oportunidades de mejora
+3. Validar estrategias que tengo en mente
+4. Construir un plan de acción concreto
+
+¿Por dónde empezamos?`;
+
+    descargarArchivo(`vivapizza_${sucNombre.toLowerCase()}_prompt_${periodo.replace(/\s/g,'_')}.txt`, txt, 'text/plain;charset=utf-8');
+  }
+
+  function exportarCSV() {
+    const ordenes = window._ordenesCompletas;
+    if (!ordenes || ordenes.length === 0) return;
+
+    const cols = [
+      'idOrden','fechaSalida','tipoOrden','ubicacionOrden','estado',
+      'totalConDescuento','totalSinDescuento','totalIv','porcDescuento',
+      'idCliente','nombreCompleto','celNotificar','metodoPago','pagoCon',
+      'vendedor','idMotorizado','zonaEnvio','numeroMesa',
+      'minTransAbierta','hrsTransAbierta'
+    ];
+
+    const encabezado = cols.join(',');
+    const filas = ordenes.map(o =>
+      cols.map(col => {
+        const val = o[col] ?? '';
+        const str = String(val).replace(/"/g, '""');
+        return str.includes(',') || str.includes('\n') || str.includes('"') ? `"${str}"` : str;
+      }).join(',')
+    );
+
+    const csv = '\uFEFF' + [encabezado, ...filas].join('\n'); // BOM para Excel
+    const ctx = window._iaContexto;
+    const nombre = `vivapizza_${(ctx?.sucursal||'datos').toLowerCase()}_${(ctx?.periodo||'').replace(/\s/g,'_')}.csv`;
+    descargarArchivo(nombre, csv, 'text/csv;charset=utf-8');
   }
 </script>
 </body>

@@ -190,6 +190,9 @@
     .ia-header .ia-icon { font-size: 20px; }
     .ia-header .ia-titulo { font-size: 14px; font-weight: 700; color: #0369a1; }
     .ia-texto { font-size: 14px; color: #1e3a5f; line-height: 1.7; white-space: pre-wrap; }
+    .btn-ia { width: 100%; padding: 10px; background: #0369a1; color: #fff; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; margin-bottom: 1.25rem; }
+    .btn-ia:hover { background: #0284c7; }
+    .btn-ia:disabled { background: #aaa; cursor: not-allowed; }
     .chart-container { position: relative; height: 340px; margin-bottom: 1.25rem; }
     .resumen-graficas { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
     .res-mini { background: #fff; border-radius: 10px; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); text-align: center; }
@@ -383,8 +386,13 @@
       </div>
     </div>
 
+    <!-- Botón análisis IA -->
+    <div id="btn-ia-wrap" style="display:none;">
+      <button class="btn-ia" id="btn-ia" onclick="generarAnalisisIA()">🤖 Generar análisis con IA</button>
+    </div>
+
     <!-- Análisis IA -->
-    <div class="ia-card" id="ia-wrap" style="display:none; margin-top:1.25rem;">
+    <div class="ia-card" id="ia-wrap" style="display:none; margin-top:0;">
       <div class="ia-header">
         <span class="ia-icon">🤖</span>
         <span class="ia-titulo">Análisis inteligente</span>
@@ -683,38 +691,52 @@
       });
       document.getElementById('tipos-dona-wrap').style.display = 'grid';
 
-      // Análisis IA via proxy
-      document.getElementById('ia-wrap').style.display = 'block';
-      document.getElementById('ia-texto').textContent = 'Generando análisis...';
+      // Guardar contexto para análisis IA posterior
+      window._iaContexto = {
+        sucursal: tipoSucursal === 'armenia' ? 'Armenia' : 'Izalco',
+        periodo: from === to ? fmtDate(from) : `${fmtDate(from)} al ${fmtDate(to)}`,
+        totalCantidad,
+        totalMonto: fmt(totalMonto),
+        resumen: orden.map(([tipo, data]) =>
+          `- ${tipo}: ${fmt(data.monto)} (${((data.monto/totalMonto)*100).toFixed(1)}% del monto), ${data.cantidad} órdenes (${((data.cantidad/totalCantidad)*100).toFixed(1)}%)`
+        ).join('\n')
+      };
 
-      const sucNombre  = tipoSucursal === 'armenia' ? 'Armenia' : 'Izalco';
-      const periodoTxt = from === to ? fmtDate(from) : `${fmtDate(from)} al ${fmtDate(to)}`;
-      const resumenData = orden.map(([tipo, data]) =>
-        `- ${tipo}: ${fmt(data.monto)} (${((data.monto/totalMonto)*100).toFixed(1)}% del monto), ${data.cantidad} órdenes (${((data.cantidad/totalCantidad)*100).toFixed(1)}%)`
-      ).join('\n');
-
-      try {
-        const iaRes = await fetch(`${PROXY}/ia/analisis-tipos`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            sucursal: sucNombre,
-            periodo: periodoTxt,
-            totalCantidad,
-            totalMonto: fmt(totalMonto),
-            resumen: resumenData
-          })
-        });
-        const iaData = await iaRes.json();
-        document.getElementById('ia-texto').textContent = iaData.texto || iaData.error || 'Sin respuesta.';
-      } catch(iaErr) {
-        document.getElementById('ia-texto').textContent = 'No se pudo generar el análisis en este momento.';
-      }
+      // Mostrar botón IA y ocultar análisis previo
+      document.getElementById('btn-ia-wrap').style.display = 'block';
+      document.getElementById('btn-ia').disabled = false;
+      document.getElementById('ia-wrap').style.display = 'none';
+      document.getElementById('estado-tipos').textContent = `${ordenes.length} órdenes analizadas`;
 
     } catch(e) {
       document.getElementById('estado-tipos').textContent = 'Error: ' + e.message;
     } finally {
       document.getElementById('btn-tipos').disabled = false;
+    }
+  }
+
+  async function generarAnalisisIA() {
+    const ctx = window._iaContexto;
+    if (!ctx) return;
+
+    document.getElementById('btn-ia').disabled = true;
+    document.getElementById('btn-ia').textContent = '🤖 Generando análisis...';
+    document.getElementById('ia-wrap').style.display = 'block';
+    document.getElementById('ia-texto').textContent = 'Consultando IA...';
+
+    try {
+      const iaRes = await fetch(`${PROXY}/ia/analisis-tipos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(ctx)
+      });
+      const iaData = await iaRes.json();
+      document.getElementById('ia-texto').textContent = iaData.texto || iaData.error || 'Sin respuesta.';
+    } catch(e) {
+      document.getElementById('ia-texto').textContent = 'No se pudo generar el análisis en este momento.';
+    } finally {
+      document.getElementById('btn-ia').disabled = false;
+      document.getElementById('btn-ia').textContent = '🤖 Generar análisis con IA';
     }
   }
 </script>
